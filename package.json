@@ -1,0 +1,18 @@
+{
+	"name": "pixel-blockchain",
+	"version": "0.0.0",
+	"description": "Simple blockchain DPOS in JS/TS",
+	"main": "index.ts",
+	"scripts": {
+		"start": "nodemon ./src/index.ts"
+	},
+	"author": "Wojciech Marek",
+	"license": "ISC",
+	"dependencies": {
+		"typescript": "^4.7.4"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.19",
+		"ts-node": "^10.9.1"
+	}
+}
