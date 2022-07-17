@@ -4,9 +4,9 @@
 			"version": 1,
 			"height": 0,
 			"prevBlockHash": "Pixel chain genesis block",
-			"hash": "e07c0d6ecf627ac8f0dd6efabddb0be45bf89bb5540d1bb8606292963395e049",
+			"hash": "b00c514128ddafdb26bc33fcceb1cfdb118d6c4c48aa6d238ebd3b9b880e80d9",
 			"merkleRoot": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-			"timestamp": 1658067755273,
+			"timestamp": 1658074480604,
 			"validator": {
 				"wallet": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
 				"name": "Testing validator"
@@ -16,11 +16,11 @@
 		},
 		{
 			"version": 1,
-			"height": 0,
-			"prevBlockHash": "222",
-			"hash": "41d479d22c3d5f6737e369eb5a945ab1f3060c1cb5665d7beec39633223ce33b",
-			"merkleRoot": "4e3819021987b9ac6e61b8adf88377216a7265248c65972ad43650c8a4dad068",
-			"timestamp": 1658067755302,
+			"height": 1,
+			"prevBlockHash": "b00c514128ddafdb26bc33fcceb1cfdb118d6c4c48aa6d238ebd3b9b880e80d9",
+			"hash": "0415095536a4337ee5136b976f0992cf6e9963604102f64d033fc7d7e1aff79e",
+			"merkleRoot": "e6434f9a9523561ffa4d4e27a9d91d08ec62d971c8c15f172aaa3181a1b1238d",
+			"timestamp": 1658074480638,
 			"validator": {
 				"wallet": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
 				"name": "Testing validator"
@@ -28,30 +28,72 @@
 			"validatorFee": 6,
 			"transactions": [
 				{
-					"hash": "e57d9e46a83f87ec1e59d05cf596f4fcc149499799f94f8fc05dd4ff3b01891a",
+					"hash": "93c7d390009e60f92458678d44501bfc47f5f3f8673d1e90ff4c5f46d941fb26",
 					"from": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
 					"destination": "123",
 					"amount": 22,
-					"timestamp": 1658067755279,
-					"signature": "3045022100e5fa26d93ac62e40748ce36cd406cc265cdadbb7c39528c8cc09df1d7c10f6ca02200a8ae55569001360573c6864e2cf0290e1a6a61534269eec7690469ef32340cb",
+					"timestamp": 1658074480612,
+					"signature": "3042021e482b55073ad1bf31844a5fb0e64b522846e0c88ecbf01847e5f1fe2099a3022011264080ff6844a280ac28d276520ec64a86662dc929a600bfd75dbfa037c765",
 					"fee": 2
 				},
 				{
-					"hash": "ce0e56f2bf2131932e910e830157586160ab1b93a2f02dd9874a9b435a0c3d05",
+					"hash": "9cb6cdd8a62efdb683834848512288dffd4e32c54ca3e490bbab6e7a02291fee",
 					"from": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
 					"destination": "123",
 					"amount": 22,
-					"timestamp": 1658067755292,
-					"signature": "304402207ec72468b18361cd6fb1562946eab1cebcf4285148d38bc41defa11d0bf2b51f02202804c714493d169285c502a8ffd23aea21101a8acce1ba217496f5b9e75257ca",
+					"timestamp": 1658074480627,
+					"signature": "3046022100a7ad7d13f41aed6d86dd221c123d8b05800c56e31de82bf33b828ecd5bc0d9f1022100ded7bd1e40a5570df7fd9d1d34d10341cdbb6c4c12fa81ce5d33b3fc46b238e6",
 					"fee": 2
 				},
 				{
-					"hash": "6cc27786af080be2e2bb09a7db1c2c154c4bc7df19cdf0d45ad2393ca7a80195",
+					"hash": "3feeadb812dfae92ed5cd146b7afa6a5ae6da9d2cbaf20961905db4653a6e431",
 					"from": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
 					"destination": "123",
 					"amount": 22,
-					"timestamp": 1658067755298,
-					"signature": "3045022100c5efc4bbe540230589402f662d1eacf00283abe4af1314417f9c4db2390026f0022052965cb2c79124f71e99c3e1401357cf895d885264f86d59884c67894ed75475",
+					"timestamp": 1658074480634,
+					"signature": "3046022100ccdbea12649fb5441ff0ba8a3b3e63e250dd6471ba65f42ee879a0512b80b5e7022100f907dcd93055f8447fb76952685dccebc1d8f6ac75e19f98f7957874d22904c2",
+					"fee": 2
+				}
+			]
+		},
+		{
+			"version": 1,
+			"height": 2,
+			"prevBlockHash": "0415095536a4337ee5136b976f0992cf6e9963604102f64d033fc7d7e1aff79e",
+			"hash": "5ae58066ae9515b8855411442adae74fdfef0b92b48336ebd148b47721ba50be",
+			"merkleRoot": "b11775e1f8547557af61124c46202c3842e34be03c7d1531ef969df77eb02e70",
+			"timestamp": 1658074480661,
+			"validator": {
+				"wallet": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
+				"name": "Testing validator"
+			},
+			"validatorFee": 6,
+			"transactions": [
+				{
+					"hash": "b53626c2dffbb283185559cc3793c14a185f7ef6d54c7fda30e168bd040aecef",
+					"from": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
+					"destination": "123",
+					"amount": 22,
+					"timestamp": 1658074480639,
+					"signature": "3046022100e7f83ee6139e2798292599784eb920afe423716c844caf773895a99cc686682502210096e17c795a8a2d04f0d60271c037f79b4ca2af1282bf87756848f4360d27c62b",
+					"fee": 2
+				},
+				{
+					"hash": "9fca36390b9dc5e868bde05d3912e9bf79d591d2f97ea0b65805d9d4c0582ae7",
+					"from": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
+					"destination": "123",
+					"amount": 22,
+					"timestamp": 1658074480647,
+					"signature": "30440220542566267cf153c651748a67fd1111d6ba64860a405de800d366f9fbbe4279c8022042922b4f7409d773455f6a0010d83a3aeae7a75f0a9cafcaeb443fb5bca95214",
+					"fee": 2
+				},
+				{
+					"hash": "47f10ba971e0567738465b982214792df05c9056d208f34815a30168113b8028",
+					"from": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
+					"destination": "123",
+					"amount": 22,
+					"timestamp": 1658074480658,
+					"signature": "3045022068ace19ea96717697cd8a24e4b34efadc8ee1085ef03f8a0ad77135ed4ace6df022100927d17e28e30eac90bffc7da16ad78a598a57db2dd777de0b38ebf388bbf03d1",
 					"fee": 2
 				}
 			]

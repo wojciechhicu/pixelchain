@@ -13,8 +13,9 @@ export class Block {
         private validatorFee: number = 0;
         private transactions: Transaction[];
 
-        constructor(version: number, prevBlockHash: string, transactions: Transaction[]){
+        constructor(version: number, height: number, prevBlockHash: string, transactions: Transaction[]){
                 this.version = version;
+                this.height = height
                 this.prevBlockHash = prevBlockHash;
                 this.timestamp = Date.now();
                 this.validator = {
