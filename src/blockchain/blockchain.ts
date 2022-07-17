@@ -13,7 +13,7 @@ export class Blockchain {
         }
 
         private genesisBlock(): Block{
-                return new Block(1, 'Pixel chain genesis block', [])
+                return new Block(1,0, 'Pixel chain genesis block', [])
         }
 
         public getLastBlockInfo(): Block{
@@ -24,9 +24,14 @@ export class Blockchain {
                 this.chain.push(_block)
         }
 }
-
+let lastblock: Block;
 let test = new Blockchain()
-test.addBlock(new Block(1,'222', [new Transaction(testSign.getPublic('hex'),'123',22,2, testSign), new Transaction(testSign.getPublic('hex'),'123',22,2, testSign), new Transaction(testSign.getPublic('hex'),'123',22,2, testSign)]));
+lastblock = test.getLastBlockInfo()
+test.addBlock(new Block(1, lastblock.height + 1,lastblock.hash, [new Transaction(testSign.getPublic('hex'),'123',22,2, testSign), new Transaction(testSign.getPublic('hex'),'123',22,2, testSign), new Transaction(testSign.getPublic('hex'),'123',22,2, testSign)]));
+
+
+lastblock = test.getLastBlockInfo()
+test.addBlock(new Block(1, lastblock.height + 1, lastblock.hash, [new Transaction(testSign.getPublic('hex'),'123',22,2, testSign), new Transaction(testSign.getPublic('hex'),'123',22,2, testSign), new Transaction(testSign.getPublic('hex'),'123',22,2, testSign)]));
 let data = JSON.stringify(test)
 //writeFileSync('test.json', data)
 console.log(test)
