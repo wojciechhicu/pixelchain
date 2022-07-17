@@ -1,0 +1,60 @@
+{
+	"chain": [
+		{
+			"version": 1,
+			"height": 0,
+			"prevBlockHash": "Pixel chain genesis block",
+			"hash": "e07c0d6ecf627ac8f0dd6efabddb0be45bf89bb5540d1bb8606292963395e049",
+			"merkleRoot": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+			"timestamp": 1658067755273,
+			"validator": {
+				"wallet": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
+				"name": "Testing validator"
+			},
+			"validatorFee": 0,
+			"transactions": []
+		},
+		{
+			"version": 1,
+			"height": 0,
+			"prevBlockHash": "222",
+			"hash": "41d479d22c3d5f6737e369eb5a945ab1f3060c1cb5665d7beec39633223ce33b",
+			"merkleRoot": "4e3819021987b9ac6e61b8adf88377216a7265248c65972ad43650c8a4dad068",
+			"timestamp": 1658067755302,
+			"validator": {
+				"wallet": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
+				"name": "Testing validator"
+			},
+			"validatorFee": 6,
+			"transactions": [
+				{
+					"hash": "e57d9e46a83f87ec1e59d05cf596f4fcc149499799f94f8fc05dd4ff3b01891a",
+					"from": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
+					"destination": "123",
+					"amount": 22,
+					"timestamp": 1658067755279,
+					"signature": "3045022100e5fa26d93ac62e40748ce36cd406cc265cdadbb7c39528c8cc09df1d7c10f6ca02200a8ae55569001360573c6864e2cf0290e1a6a61534269eec7690469ef32340cb",
+					"fee": 2
+				},
+				{
+					"hash": "ce0e56f2bf2131932e910e830157586160ab1b93a2f02dd9874a9b435a0c3d05",
+					"from": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
+					"destination": "123",
+					"amount": 22,
+					"timestamp": 1658067755292,
+					"signature": "304402207ec72468b18361cd6fb1562946eab1cebcf4285148d38bc41defa11d0bf2b51f02202804c714493d169285c502a8ffd23aea21101a8acce1ba217496f5b9e75257ca",
+					"fee": 2
+				},
+				{
+					"hash": "6cc27786af080be2e2bb09a7db1c2c154c4bc7df19cdf0d45ad2393ca7a80195",
+					"from": "046a24ab5844adc8a32daff279ae15ff8abc3eb8c77c14ba7368ed447e6184e91bc674b461d2deee48cf6f89bd202d8ac8944dd96e2df4d83a8df459be6d544eee",
+					"destination": "123",
+					"amount": 22,
+					"timestamp": 1658067755298,
+					"signature": "3045022100c5efc4bbe540230589402f662d1eacf00283abe4af1314417f9c4db2390026f0022052965cb2c79124f71e99c3e1401357cf895d885264f86d59884c67894ed75475",
+					"fee": 2
+				}
+			]
+		}
+	]
+}

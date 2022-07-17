@@ -1,0 +1,5 @@
+export class VinTransaction {
+        constructor(){
+                
+        }
+}

@@ -16,37 +16,35 @@ const ec = new elliptic.ec('secp256k1');
  * 
  */
 export class Transaction {
-	private index: number = 0;
 	private hash: string = '';
 	private from: string = '';
 	private destination: string = '';
 	private amount: number = 0;
 	private timestamp: number = 0;
 	private signature: string = '';
-	private fee: number = 0;
+	public fee: number = 0;
 
 	/**
 	 * Main transaction constructor
 	 * @param from from which address send pixels
 	 * @param destination to adress
 	 * @param amount amount of pixels
-	 * @param index index of transaction in list of transactions
 	 * @param fee fee for transfer for validator
 	 */
 	constructor(
 		from: string,
 		destination: string,
 		amount: number,
-		index: number,
 		fee: number,
+		key: elliptic.ec.KeyPair
 	) {
-		this.index = index;
 		this.from = from;
 		this.destination = destination;
 		this.amount = amount;
 		this.timestamp = Date.now();
 		this.hash = this.calculateHash();
-		this.fee = fee
+		this.fee = fee;
+		this.signature = this.signTransaction(key);
 	}
 
 	/**
@@ -63,14 +61,14 @@ export class Transaction {
 	 * Sign transaction calculated hash
 	 * @param signingKey signing key
 	 */
-	public signTransaction(signingKey: elliptic.ec.KeyPair) {
+	private signTransaction(signingKey: elliptic.ec.KeyPair): string {
 		if (signingKey.getPublic('hex') != this.from) {
 			throw new Error('cannot sign transactions for other wallets');
 		}
 
 		const hashTx = this.calculateHash();
 		const sig = signingKey.sign(hashTx);
-		this.signature = sig.toDER('hex');
+		return sig.toDER('hex');
 	}
 
 	/**
