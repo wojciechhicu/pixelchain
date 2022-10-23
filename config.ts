@@ -4,6 +4,6 @@ export const Server: ServerConfig = {
 }
 
 interface ServerConfig {
-        Host: string,
+        Host: string;
         Port: number;
 }

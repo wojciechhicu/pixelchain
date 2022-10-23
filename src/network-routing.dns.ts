@@ -6,5 +6,5 @@ export const dns:DNS = {
 interface DNS {
         host: string;
         port: number;
-        type: 'validator' | 'router'
+        type: 'validator' | 'router';
 }

@@ -11,12 +11,15 @@
 	"dependencies": {
 		"@types/express": "^4.17.14",
 		"@types/filesystem": "^0.0.32",
+		"@types/node": "^18.11.4",
+		"@types/request": "^2.48.8",
 		"cors": "^2.8.5",
 		"crypto-js": "^4.1.1",
 		"elliptic": "^6.5.4",
 		"express": "^4.18.2",
 		"fs": "^0.0.1-security",
 		"helmet": "^6.0.0",
+		"request": "^2.88.2",
 		"secp256k1": "^4.0.3",
 		"typescript": "^4.7.4"
 	},
