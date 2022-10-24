@@ -3,9 +3,7 @@ import { Server } from '../config';
 import helmet from 'helmet';
 import cors from 'cors';
 import routes from './routes-tree/routes-index';
-import { dns } from './network-routing.dns';
-import http from 'http';
-import request from 'request';
+import { onStartReloadGetPeers } from './utils/peers-functions';
 
 const app = Express();
 
@@ -18,7 +16,6 @@ app.get('/', (req, res) => {
 });
 
 app.listen(Server.Port, () => {
-	
-
+	onStartReloadGetPeers();
 	console.log(`Validator created: ${Server.Host}:${Server.Port}`);
 });
