@@ -72,13 +72,15 @@ export function onStartReloadGetPeers(): boolean{
 }
 
 /**
- * 
- * @param peers 
- * @returns 
+ * Save peers from router and save it to json file.
+ * Everytime server is started / reload get new peers.
+ * @param peers array of peers to save
+ * @returns true if everything is ok or false if there was an error
  */
 export function savePeers(peers: ConnectedPeers): boolean {
         try {
                 let file = fs.writeFileSync('src/data/peers/connected-peers.json', JSON.stringify(peers), { encoding: 'utf8'});
+                console.log('%cRouting ready.', "color: yellow")
                 return true
         } catch(e) {
                 console.log(e)
