@@ -3,3 +3,6 @@
 
 #node
 /node_modules
+
+#data folders
+/src/data/peers/*

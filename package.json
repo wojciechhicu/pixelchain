@@ -4,7 +4,7 @@
 	"description": "Simple blockchain DPOS in JS/TS",
 	"main": "index.ts",
 	"scripts": {
-		"start": "nodemon ./src/validator.run.ts"
+		"start": "nodemon ./src/validator.run.ts --ignore ./src/data"
 	},
 	"author": "Wojciech Marek",
 	"license": "ISC",
