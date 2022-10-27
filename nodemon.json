@@ -1,7 +1,5 @@
 {
         "ignore": [
-                "./test.json",
-                "./src/data",
-                "./mempool/"
+                "*.json"
         ]
 }
