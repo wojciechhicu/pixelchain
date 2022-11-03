@@ -1,5 +1,6 @@
 import { InMempoolTransaction } from "../mempool/mempool.interface";
-import * as elliptic from 'elliptic'
+import * as elliptic from 'elliptic';
+import { calcTxSHA256 } from '../../blockchain/transaction.functions'
 import { SHA256 } from "crypto-js";
 const ec = new elliptic.ec('secp256k1');
 
@@ -16,13 +17,4 @@ export function isReceivedTxValid(tx: InMempoolTransaction): boolean {
 
         const test = ec.keyFromPublic(tx.from, 'hex');
         return test.verify(calcTxSHA256(tx), tx.signature)
-}
-
-/**
- * Calculate SHA256 hash for this specyfic transaction
- * @param tx transaction object
- * @returns SHA256 of transaction
- */
-function calcTxSHA256(tx: InMempoolTransaction): string {
-        return SHA256(tx.from + tx.to + tx.txValue + tx.timestamp + tx.fee).toString()
 }
