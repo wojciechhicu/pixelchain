@@ -5,4 +5,6 @@ export interface InMempoolTransaction {
         txValue: number;
         fee: number;
         timestamp: number;
+        uTxo?: number;
+        TxHash?: string;
 }
