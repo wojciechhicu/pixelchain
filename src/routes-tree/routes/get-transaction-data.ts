@@ -21,14 +21,14 @@ transactionData.post('/', (req, res) => {
 			})
 		})
 		if(txInFile.length == 0){
-			res.send(`No transaction in blockchain with hash ${reqTx}`)
+			res.status(404).send(`No transaction in blockchain with hash ${reqTx}`)
 		} else {
 			fs.readFile(`src/data/blockchain/blocks/${txInFile}.json`,'utf8' ,(err, data:any)=>{
 				let blocks: Block[] = JSON.parse(data);
 				blocks.forEach((val)=>{
 					val.transactions.forEach((value)=>{
 						if(reqTx.TxHash === value.TxHash){
-							res.send(value)
+							res.status(200).send(value)
 						}
 					})
 				})
