@@ -1,7 +1,7 @@
 import  Express  from "express";
 import fs from 'fs';
 import { InMempoolTransaction as TX} from "src/_helpers/mempool/mempool.interface";
-import { isReceivedTxValid, walletAlreadyInMempool } from "../../_helpers/blockchain/validator-validate-tx";
+import { isReceivedTxValid, walletAlreadyInMempool, walletHaveEnoughTokens } from "../../_helpers/blockchain/validator-validate-tx";
 import { SHA256 } from'crypto-js';
 
 const sendTx = Express.Router();
@@ -12,18 +12,27 @@ sendTx.post("/", (req:any, res)=>{
                 requestTx.timestamp = Number(requestTx.timestamp);
                 requestTx.txValue = Number(requestTx.txValue);
                 requestTx.fee = Number(requestTx.fee);
+                /**
+                 * check If transaction looks correct
+                 */
                 if(!isReceivedTxValid(requestTx)){
                         res.status(201).send({error: 'Transaction not valid.'});
                         return;
                 }
+                /**
+                 * check If wallet already have transaction in mempool ( prevent double spend in blocks )
+                 */
                 if(walletAlreadyInMempool(requestTx)){
                         res.status(201).send({error: 'Wallet already exist in mempool.'});
                         return;
                 }
-                // if(!walletHaveEnoughTokens(requestTx)){
-                //         res.status(404).send('Not enough funds!');
-                //         return;
-                // }
+                /**
+                 * Check If wallet have enough pixels to send transaction TX value + fee
+                 */
+                if(!walletHaveEnoughTokens(requestTx)){
+                        res.status(201).send({error:'Not enough funds!'});
+                        return;
+                }
                 fs.readFile('src/data/mempool/transactions.json', 'utf8', (err, data)=>{
                         if(err){
                                 res.status(400).send({err: err})

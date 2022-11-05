@@ -4,6 +4,7 @@ import { calcTxSHA256 } from '../../blockchain/transaction.functions'
 import { SHA256 } from "crypto-js";
 const ec = new elliptic.ec('secp256k1');
 import fs from 'fs';
+import { Block } from "./block.interface";
 
 /**
  * Test is transaction valid to add to mempool
@@ -20,15 +21,46 @@ export function isReceivedTxValid(tx: InMempoolTransaction): boolean {
         return test.verify(calcTxSHA256(tx), tx.signature)
 }
 
-// export function walletHaveEnoughTokens(tx: InMempoolTransaction): boolean {
-//         if(tx.fee <= 0){
-//                 return false;
-//         }
-//         if(tx.txValue <= 0){
-//                 return false;
-//         }
+export function walletHaveEnoughTokens(tx: InMempoolTransaction) {
+        try {
+                if(tx.fee <= 0){
+                        return false;
+                }
+                if(tx.txValue <= 0){
+                        return false;
+                }
+                const combinedValue: number = tx.txValue + tx.fee;
+                let valueOfWallet: number = 0;
+                const files = getBlocksFiles();
+                let transactions: InMempoolTransaction[] = [];
+                files.forEach((v)=>{
+                        const file: Block[] = JSON.parse(fs.readFileSync(`src/data/blockchain/blocks/${v}`, 'utf8'));
+                        file.forEach((val)=>{
+                                val.transactions.forEach((value)=>{
+                                        if(value.from == tx.from || value.to == tx.from){
+                                                transactions.push(value);
+                                        }
+                                })
+                        })
+                })
+                transactions.forEach((val)=>{
+                        if(val.to == tx.from){
+                                valueOfWallet += val.txValue;
+                        }
+                        if(val.from == tx.from){
+                                valueOfWallet -= val.txValue
+                        }
+                })
+                if(valueOfWallet - combinedValue >= 0){
+                        return true
+                } else {
+                        return false
+                }
+        } catch(e){
+                return e
+        }
 
-// }
+}
 
 export function walletAlreadyInMempool(tx: InMempoolTransaction): boolean  {
         try {
@@ -48,4 +80,13 @@ export function walletAlreadyInMempool(tx: InMempoolTransaction): boolean  {
         } catch( e ){
                 return false
         }
+}
+
+/**
+ * Get all files which contains blockchain
+ * @returns 
+ */
+function getBlocksFiles(): string[]{
+        let files = fs.readdirSync('src/data/blockchain/blocks', 'utf8');
+        return files
 }

@@ -1,12 +1,3 @@
 [
-  {
-    "from": "04493ca61fcd504a051563f2a41f095c1040d2d33694b58ab853b14caf855cae5c713e6ca7c1a2a10584e0f9c6a3720d641103baad200187b4d30fe67e65c55225",
-    "to": "fdghjds44ertrefgdfgertert",
-    "signature": "304402207ceec8c22f014679d76dc4c225607a4a422ecfbc9da1713b2bbb46cf90047f7e02200d4d8e2bfefc8f839164f2d554e2b417112678989060a3e3ecfa41544da520b3",
-    "txValue": 32,
-    "fee": 2,
-    "timestamp": 1667664936438,
-    "TxHash": "95a9ec4a70710a6a5b794cc177cb0658dda0c2fbb73b43cff514dc2cc1e2c565",
-    "status": 1
-  }
+
 ]
