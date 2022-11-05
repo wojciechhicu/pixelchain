@@ -7,4 +7,5 @@ export interface InMempoolTransaction {
         timestamp: number;
         uTxo?: number;
         TxHash?: string;
+        status?: number;
 }
