@@ -17,12 +17,13 @@ const walletsBalance = Express.Router();
 
                 requestWallets.forEach((val, ind)=>{
                         let walletBalance!: WalletBalances;
-                        walletBalance.walletPubkey = requestWallets[ind];
-                        walletBalance.balance = getWalletsBalances(requestWallets[ind]);
-                        walletBalancesList.push(walletBalance);
+                        walletBalance = {
+                                walletPubkey: val,
+                                balance: getWalletsBalances(val)     
+                        }
+                        walletBalancesList.push(walletBalance)
                 })
-
-                res.status(200).send({balances: walletBalancesList})
+                res.status(200).send(walletBalancesList)
 
 })
 
