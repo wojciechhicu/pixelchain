@@ -1,6 +1,6 @@
 {
 	"name": "pixel-blockchain",
-	"version": "0.0.0",
+	"version": "0.0.3",
 	"description": "Simple blockchain DPOS in JS/TS",
 	"main": "index.ts",
 	"scripts": {
