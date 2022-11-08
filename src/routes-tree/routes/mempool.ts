@@ -10,7 +10,7 @@ mempool.get("/", (req, res) => {
 	try {
 		fs.readFile('src/data/mempool/transactions.json', 'utf8', (err, data)=>{
 			if(err){
-				throw err
+				res.status(400).send({err: err})
 			} else {
 				res.send(data)
 			}
