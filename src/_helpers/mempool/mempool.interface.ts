@@ -8,4 +8,5 @@ export interface InMempoolTransaction {
         uTxo?: number;
         TxHash?: string;
         status?: number;
+        blockHeight?: number;
 }

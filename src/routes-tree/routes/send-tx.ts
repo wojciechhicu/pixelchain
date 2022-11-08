@@ -17,6 +17,7 @@ sendTx.post("/", (req:any, res)=>{
                  */
                 if(!isReceivedTxValid(requestTx)){
                         res.status(201).send({error: 'Transaction not valid.'});
+                        console.log('not valid')
                         return;
                 }
                 /**
