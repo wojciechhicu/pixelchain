@@ -1,5 +1,6 @@
 import Express from 'express';
 import { getWalletsBalances } from '../../utils/get-wallets-balances';
+import { check04, checklength130 } from '../../utils/get-wallet-balance-functions';
 
 const walletsBalance = Express.Router();
 
@@ -10,6 +11,14 @@ walletsBalance.post('/', (req, res) => {
                 if (requestWallets.length <= 0) {
                         res.status(404).send({ err: 'Wallets list empty' });
                         return;
+                }
+                if (check04(requestWallets)){
+                        res.status(404).send({err: 'This is not wallet address'})
+                        return
+                }
+                if (checklength130(requestWallets)){
+                        res.status(404).send({err: 'This is not wallet address'})
+                        return
                 }
                 let walletBalancesList: WalletBalances[] = [];
         
@@ -33,6 +42,3 @@ interface WalletBalances {
 	walletPubkey: string;
 	balance: number;
 }
-//TODO dodać zabezpieczenie na długoś pubkey 130 długość
-//TODO zabezpieczenie ze poczatek portfela zaczyna sie 04*
-//FIXME jesli będzie coś źle zwracało zmienić na asynchroniczne czytanie plików

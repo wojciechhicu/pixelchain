@@ -46,7 +46,7 @@ transactionData.post('/', (req, res) => {
 						});
 					}
 				);
-			}
+			}// TODO dodać status transakcji oraz block h
 		} else {
 			res.status(400).send({error: 'Transaction hash length too short'})
 		}
