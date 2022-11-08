@@ -8,6 +8,7 @@ const transactionData = Express.Router();
 transactionData.post('/', (req, res) => {
 	try {
 		let reqTx: TxHash = req.body;
+		let block: number = 0;
 
 		if (reqTx.TxHash.length >= 64) {
 			let files = getFilesInDir().slice().reverse();
@@ -23,6 +24,7 @@ transactionData.post('/', (req, res) => {
 					val.Tx?.forEach((value) => {
 						if (value.txHash === reqTx.TxHash) {
 							txInFile = val.blockInFile;
+							block = val.blockHeight;
 						}
 					});
 				});
@@ -40,6 +42,7 @@ transactionData.post('/', (req, res) => {
 						blocks.forEach((val) => {
 							val.transactions.forEach((value) => {
 								if (reqTx.TxHash === value.TxHash) {
+									value.blockHeight = block;
 									res.status(200).send(value);
 								}
 							});
