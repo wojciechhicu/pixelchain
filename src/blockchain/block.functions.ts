@@ -1,8 +1,8 @@
+/** Basic imports */
 import { InMempoolTransaction as TX} from "src/_helpers/mempool/mempool.interface";
 import * as elliptic from 'elliptic'
 import { SHA256 } from "crypto-js";
 const ec = new elliptic.ec('secp256k1');
-import { isValidTx } from "./transaction.functions";
 import { Block } from "src/_helpers/blockchain/block.interface";
 import { Index } from "src/_helpers/blockchain/block.indexes.interface";
 import fs from 'fs';
@@ -14,8 +14,13 @@ export function createBlock(transactions: TX[]): void {
                 console.log( e )
         }
 }
+
+/**
+ * Create genesis block function
+ */
 export function genesisBlock(): void {
         try {
+                /** create genesis block */
                 let genesis: Block[] = [{
                         header: {
                                 version: 1,
@@ -48,11 +53,14 @@ export function genesisBlock(): void {
                                 }
                         ]
                 }]
+
+                /** Create hash for transactions */
                 let first = SHA256(JSON.stringify(genesis[0].transactions[0])).toString();
                 genesis[0].transactions[0].TxHash = first;
                 let second = SHA256(JSON.stringify(genesis[0].transactions[1])).toString();
                 genesis[0].transactions[1].TxHash = second;
 
+                /** Create index file of genesis block */
                 const index: Index[] = [{
                         blockHeight: 0,
                         blockInFile: 'pixel000000001',
@@ -65,11 +73,15 @@ export function genesisBlock(): void {
                                 }
                         ]
                 }]
+
+                /** Write blockchain */
                 fs.writeFile('src/data/blockchain/blocks/pixel000000001.json', JSON.stringify(genesis, null, 2), 'utf8', ( err )=>{
                         if( err ){
                                 console.log( err )
                         } else {
                                 console.log('Created genesis block!');
+
+                                /** Write index file */
                                 fs.writeFile('src/data/blockchain/indexes/index000001.json', JSON.stringify(index, null, 2),'utf8', (error)=>{
                                         if( error ){
                                                 console.log( error )

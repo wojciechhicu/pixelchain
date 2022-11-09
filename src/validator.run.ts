@@ -1,3 +1,4 @@
+/** Basic imports */
 import Express from 'express';
 import { Server } from '../config';
 import helmet from 'helmet';
@@ -5,10 +6,12 @@ import cors from 'cors';
 import routes from './routes-tree/routes-index';
 import bodyParser from 'body-parser';
 import { onStartReloadGetPeers } from './utils/peers-functions';
-import { genesisBlock } from './blockchain/block.functions';
-
 const app = Express();
 
+/** Create genesis block file */
+import { genesisBlock } from './blockchain/block.functions';
+
+/** use express */
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
@@ -18,8 +21,10 @@ app.get('/', (req, res) => {
 	res.send('VALIDATOR');
 });
 
+/**
+ * Starts app
+ */
 app.listen(Server.Port, () => {
-	//genesisBlock()
 	const onStart: boolean = onStartReloadGetPeers();
 	console.log(`Validator created: ${Server.Host}:${Server.Port}`);
 });

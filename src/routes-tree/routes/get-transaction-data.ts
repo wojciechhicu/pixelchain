@@ -1,36 +1,53 @@
+/** Basic imports */
 import Express from 'express';
 import fs from 'fs';
 import { Index } from 'src/_helpers/blockchain/block.indexes.interface';
 import { Block } from 'src/_helpers/blockchain/block.interface';
 import { InMempoolTransaction as Mempool} from 'src/_helpers/mempool/mempool.interface';
-
 const transactionData = Express.Router();
 
+/**
+ * Routes logic
+ * Route: /get-transaction-data
+ */
 transactionData.post('/', (req, res) => {
 	try {
+		/** init hash of transaction */
 		let reqTx: TxHash = req.body;
+
+		/** init block height as 0 */
 		let block: number = 0;
 
+		/** Check if transaction hash length is higher than 64 */
 		if (reqTx.TxHash.length >= 64) {
+
+			/** files with indexes reversed to check firstly new blocks */
 			let files = getFilesInDir().slice().reverse();
+
+			/** file name where transaction is stored */
 			let txInFile: string = '';
 
+			/** mempool transactions */
 			let mempool: Mempool[] = JSON.parse(fs.readFileSync('src/data/mempool/transactions.json', 'utf8'));
+
+			/** How single tx looks */
 			let singleTx!: Mempool;
 
-			//check firstly mempool
+			/** Check firstly mempool if there is any transaction like specyfied */
 			mempool.forEach((val)=>{
 				if(val.TxHash == reqTx.TxHash){
 					singleTx = val;
 					singleTx.blockHeight = -1;
 				}
 			})
+
+			/** If transaction is in mempool send obj and stop logic */
 			if(singleTx != undefined){
 				res.status(200).send(singleTx);
 				return
 			}
 
-			// check blockchain files
+			/** Check blockchain files */
 			files.forEach((val) => {
 				let file: Index[] = JSON.parse(
 					fs.readFileSync(
@@ -47,7 +64,8 @@ transactionData.post('/', (req, res) => {
 					});
 				});
 			});
-			// if there was no transaction hash in blockchain and mempool then respond error
+
+			/** if there was no transaction hash in blockchain and mempool then respond error */
 			if (txInFile.length == 0) {
 				let noTx: Mempool = {
 					from: '',
@@ -88,12 +106,21 @@ transactionData.post('/', (req, res) => {
 	}
 });
 
+/** Export route */
 export = transactionData;
 
+/**
+ * Simple txhash of transaction
+ * @param TxHash hash
+ */
 interface TxHash {
 	TxHash: string;
 }
 
+/**
+ * Get files with indexes of blockchain
+ * @returns array of files names
+ */
 function getFilesInDir(): string[] {
 	return fs.readdirSync('src/data/blockchain/indexes', 'utf8');
 }

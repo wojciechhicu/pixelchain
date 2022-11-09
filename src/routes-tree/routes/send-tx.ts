@@ -1,17 +1,33 @@
+/** Basic imports */
 import  Express  from "express";
 import fs from 'fs';
 import { InMempoolTransaction as TX} from "src/_helpers/mempool/mempool.interface";
 import { isReceivedTxValid, walletAlreadyInMempool, walletHaveEnoughTokens } from "../../_helpers/blockchain/validator-validate-tx";
 import { SHA256 } from'crypto-js';
-
 const sendTx = Express.Router();
 
+/**
+ * Route logic
+ * Route: /send-transaction
+ */
 sendTx.post("/", (req:any, res)=>{
         try {
+                /** Init how request looks */
                 let requestTx: TX = req.body;
+
+                /**
+                 * Making sure that timestamp, value and fee are numbers
+                 */
                 requestTx.timestamp = Number(requestTx.timestamp);
                 requestTx.txValue = Number(requestTx.txValue);
                 requestTx.fee = Number(requestTx.fee);
+
+                /**Check if sender wallets its different than receiver wallet */
+                if(requestTx.from == requestTx.to){
+                        res.status(400).send({error: 'Cannot send transaction to yourself'});
+                        return
+                }
+
                 /**
                  * check If transaction looks correct
                  */
@@ -20,6 +36,7 @@ sendTx.post("/", (req:any, res)=>{
                         console.log('not valid')
                         return;
                 }
+
                 /**
                  * check If wallet already have transaction in mempool ( prevent double spend in blocks )
                  */
@@ -27,6 +44,7 @@ sendTx.post("/", (req:any, res)=>{
                         res.status(201).send({error: 'Wallet already exist in mempool.'});
                         return;
                 }
+
                 /**
                  * Check If wallet have enough pixels to send transaction TX value + fee
                  */
@@ -34,6 +52,8 @@ sendTx.post("/", (req:any, res)=>{
                         res.status(201).send({error:'Not enough funds!'});
                         return;
                 }
+
+                /** If validation is done then search for transaction */
                 fs.readFile('src/data/mempool/transactions.json', 'utf8', (err, data)=>{
                         if(err){
                                 res.status(400).send({err: err})
@@ -46,7 +66,7 @@ sendTx.post("/", (req:any, res)=>{
                                 
                                 fs.writeFile('src/data/mempool/transactions.json', JSON.stringify(fullMemory, null, 2), (error)=>{
                                         if(error){
-                                                res.status(404).send({error:error})
+                                                res.status(400).send({error:error})
                                         } else {
                                                 res.status(200).send({response:'Transaction added to mempool'})
                                         }
@@ -58,7 +78,5 @@ sendTx.post("/", (req:any, res)=>{
         }
 })
 
+/** Export route logic */
 export = sendTx;
-
-//TODO sprawdzić czy wallet z którego jest wysyłana transakcja jest inny od tego do którego wysyłamy
-//TODO dokumentacja kodu

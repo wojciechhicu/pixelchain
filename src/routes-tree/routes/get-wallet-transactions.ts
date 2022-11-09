@@ -13,3 +13,4 @@ const walletTxs = Express.Router();
 })
 
 export = walletTxs;
+//TODO dokończyć to

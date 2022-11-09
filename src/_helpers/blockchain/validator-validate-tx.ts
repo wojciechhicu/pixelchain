@@ -1,7 +1,7 @@
+/** Basic imports */
 import { InMempoolTransaction } from "../mempool/mempool.interface";
 import * as elliptic from 'elliptic';
 import { calcTxSHA256 } from '../../blockchain/transaction.functions'
-import { SHA256 } from "crypto-js";
 const ec = new elliptic.ec('secp256k1');
 import fs from 'fs';
 import { Block } from "./block.interface";
@@ -21,18 +21,39 @@ export function isReceivedTxValid(tx: InMempoolTransaction): boolean {
         return test.verify(calcTxSHA256(tx), tx.signature)
 }
 
+/**
+ * Check if wallet have enough tokens to spend
+ * @param tx transaction object
+ * @returns true when have enough; false else
+ */
 export function walletHaveEnoughTokens(tx: InMempoolTransaction) {
         try {
-                if(tx.fee <= 0){
+                /** check if fee is higher than 0 */
+                if(tx.fee < 0.0000001){
                         return false;
                 }
-                if(tx.txValue <= 0){
+
+                /** Check if tx value is higher than 0 */
+                if(tx.txValue < 0.0000001){
                         return false;
                 }
+
+                /** COmbined value of fee and transaction value */
                 const combinedValue: number = tx.txValue + tx.fee;
+
+                /** Init wallet balance as 0 */
                 let valueOfWallet: number = 0;
+
+                /** Get files as array */
                 const files = getBlocksFiles();
+
+                /** init transactions object */
                 let transactions: InMempoolTransaction[] = [];
+
+                /** 
+                 * check every file for transactions for this wallet and if transaction have 'from' or 'to' as publickey this wallet
+                 * then push transactions object
+                */
                 files.forEach((v)=>{
                         const file: Block[] = JSON.parse(fs.readFileSync(`src/data/blockchain/blocks/${v}`, 'utf8'));
                         file.forEach((val)=>{
@@ -43,6 +64,8 @@ export function walletHaveEnoughTokens(tx: InMempoolTransaction) {
                                 })
                         })
                 })
+
+                /** Calculate balance of wallet */
                 transactions.forEach((val)=>{
                         if(val.to == tx.from){
                                 valueOfWallet += val.txValue;
@@ -51,27 +74,41 @@ export function walletHaveEnoughTokens(tx: InMempoolTransaction) {
                                 valueOfWallet -= val.txValue
                         }
                 })
+
+                /** Check if wallet have enough tokens to send */
                 if(valueOfWallet - combinedValue >= 0){
                         return true
                 } else {
                         return false
                 }
         } catch(e){
-                return e
+                return false
         }
 
 }
 
+/**
+ * Check if wallet as sender exist in mempool
+ * @param tx transaction object
+ * @returns true if wallet is in mempool; false if it is't
+ */
 export function walletAlreadyInMempool(tx: InMempoolTransaction): boolean  {
         try {
-                let rawFile: any = fs.readFileSync('src/data/mempool/transactions.json', 'utf8')
+                /** Read mempool file */
+                let rawFile: any = fs.readFileSync('src/data/mempool/transactions.json', 'utf8');
+
+                /** init interface to mempool */
                 let file: InMempoolTransaction[] = JSON.parse(rawFile);
+
+                /** Check number if wallet is in mempool then add 1 */
                 let check: number = 0;
                 file.forEach((val)=>{
                         if(val.from == tx.from){
                                 check += 1;
                         }
                 })
+
+                /** Final valaidate if number is higher than 0 then exist in mempool */
                 if(check > 0){
                         return true
                 } else {
@@ -84,7 +121,7 @@ export function walletAlreadyInMempool(tx: InMempoolTransaction): boolean  {
 
 /**
  * Get all files which contains blockchain
- * @returns 
+ * @returns array of file names
  */
 function getBlocksFiles(): string[]{
         let files = fs.readdirSync('src/data/blockchain/blocks', 'utf8');
