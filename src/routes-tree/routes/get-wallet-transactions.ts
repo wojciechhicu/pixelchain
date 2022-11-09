@@ -6,7 +6,7 @@ const walletTxs = Express.Router();
 
  walletTxs.post("/", (req, res) => {
 	try {
-		res.status(200).send(req.body)
+		res.status(200).send({res: 'dddd'})
 	} catch(e){
 		res.status(400).send({error: e})
 	}
