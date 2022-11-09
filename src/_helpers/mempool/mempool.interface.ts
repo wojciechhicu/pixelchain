@@ -1,3 +1,7 @@
+/**
+ * Mempool transactions or received transactions
+ * Utxo, txhash, status and block  height added depends on needs
+ */
 export interface InMempoolTransaction {
         from: string;
         to: string;

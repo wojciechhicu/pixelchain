@@ -1,8 +1,14 @@
+/** Basic imports */
 import { InMempoolTransaction as TX} from "src/_helpers/mempool/mempool.interface";
 import * as elliptic from 'elliptic'
 import { SHA256 } from "crypto-js";
 const ec = new elliptic.ec('secp256k1');
 
+/**
+ * Check if transaction is valid
+ * @param tx transaction object
+ * @returns true / false; true if tx is correct
+ */
 export function isValidTx(tx: TX): boolean {
 	if(tx.from == null) { return false }
 	if(tx.from == undefined) { return false }
@@ -11,6 +17,11 @@ export function isValidTx(tx: TX): boolean {
 	return test.verify(calcTxSHA256(tx), tx.signature)
 }
 
+/**
+ * SHA256 of tx data
+ * @param tx transaction object
+ * @returns hashed string of most important data
+ */
 export function calcTxSHA256(tx: TX): string {
 	return SHA256(tx.from + tx.to + tx.txValue + tx.timestamp + tx.fee).toString()
 }

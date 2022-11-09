@@ -1,8 +1,10 @@
+/** Basic imports */
 import request from 'request';
 import { Server } from '../../config';
 import { dns } from '../network-routing.dns';
 import { ConnectedPeers } from 'src/_helpers/peers/connected-peers.interface';
-import fs from 'fs'
+import fs from 'fs';
+
 /**
  * connect to network every reload / start
  */
@@ -35,6 +37,10 @@ export function connectMeToNetwork(): boolean{
         }
 }
 
+/**
+ * When server starts or reload connect to network
+ * @returns boolean and send message to console
+ */
 export function onStartReloadGetPeers(): boolean{
         const connect = connectMeToNetwork();
         if(connect === true){
