@@ -61,3 +61,4 @@ sendTx.post("/", (req:any, res)=>{
 export = sendTx;
 
 //TODO sprawdzić czy wallet z którego jest wysyłana transakcja jest inny od tego do którego wysyłamy
+//TODO dokumentacja kodu
