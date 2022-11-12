@@ -52,7 +52,8 @@ const walletTxs = Express.Router();
 
 		/** Check if there is any transaction for wallet */
 		if(walletTransactions.length <= 0){
-			res.status(201).send({error: 'No transactions for this wallet'})
+			res.status(200).send(walletTransactions)
+			return
 		} else {
 			res.status(200).send(walletTransactions)
 		}
@@ -64,3 +65,4 @@ const walletTxs = Express.Router();
 
 /** export route to router */
 export = walletTxs;
+//TODO dodać true lub false dla in jesli transakcja wychodzi z portfela lub przychodzi

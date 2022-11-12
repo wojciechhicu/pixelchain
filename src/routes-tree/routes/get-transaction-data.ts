@@ -87,7 +87,7 @@ transactionData.post('/', (req, res) => {
 					(err, data: any) => {
 						let blocks: Block[] = JSON.parse(data);
 						blocks.forEach((val) => {
-							val.transactions.forEach((value) => {
+							val.transactions.every((value) => {
 								if (reqTx.TxHash === value.TxHash) {
 									value.blockHeight = block;
 									value.status = 2;
