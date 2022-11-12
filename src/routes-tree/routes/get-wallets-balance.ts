@@ -62,4 +62,4 @@ export = walletsBalance;
 interface WalletBalances {
 	walletPubkey: string;
 	balance: number;
-}
+} //TODO sprawdzić czy balance działa poprawnie gdy fee jest uwzględniane
