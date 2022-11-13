@@ -5,11 +5,8 @@ import helmet from 'helmet';
 import cors from 'cors';
 import routes from './routes-tree/routes-index';
 import bodyParser from 'body-parser';
-import { onStartReloadGetPeers } from './utils/peers-functions';
+import { onStartReloadGetPeers } from './blockchain/main-chain/files-operators';
 const app = Express();
-
-/** Create genesis block file */
-import { genesisBlock } from './blockchain/block.functions';
 
 /** use express */
 app.use(cors());
