@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import routes from './routes-tree/routes-index';
 import bodyParser from 'body-parser';
-import { onStartReloadGetPeers } from './blockchain/main-chain/files-operators';
+import { onStartReloadGetPeers } from './blockchain/operators';
 const app = Express();
 
 /** use express */
