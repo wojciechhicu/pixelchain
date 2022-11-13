@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
  * Starts app
  */
 app.listen(Server.Port, () => {
+
 	const onStart: boolean = onStartReloadGetPeers();
 	console.log(`Validator created: ${Server.Host}:${Server.Port}`);
 });

@@ -37,7 +37,7 @@ export function genesisBlock(): void {
                                         fee: 0,
                                         signature: 'null',
                                         timestamp: 1667505060,
-                                        txValue: 32000000,
+                                        txValue: 3200000000,
                                         uTxo: 0,
                                         TxHash: 'null'
                                 },
@@ -47,7 +47,7 @@ export function genesisBlock(): void {
                                         fee: 0,
                                         signature: 'null',
                                         timestamp: 1667505060,
-                                        txValue: 32000000,
+                                        txValue: 3200000000,
                                         uTxo: 0,
                                         TxHash: 'null'
                                 }
