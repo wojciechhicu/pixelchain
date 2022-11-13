@@ -1,5 +1,5 @@
 /** Import important libraries */
-import { readdir, readFile, readFileSync } from 'fs';
+import { readdir, readFile, readFileSync, stat } from 'fs';
 
 /** Import interfaces */
 import { InMempoolTransaction as TX } from 'src/_helpers/mempool/mempool.interface';
@@ -102,6 +102,24 @@ export function getMemPoolTransactionsSortFee(): Promise<TX[] | null> {
 	})
 }
 
+/**
+ * Get file size in MB
+ * @param path path to file to check
+ * @returns size in MB
+ */
+export function getFileSize(path: string): Promise<number> {
+	return new Promise (resolve=>{
+		stat(path, (err, stat)=>{
+			if(err){
+				resolve(120)
+			} else {
+				resolve(stat.size / (1024 * 1000))
+			}
+		})
+	})
+}
+
+
 //==================== NETWORK FUNCTIONS ====================
 /**
  * Get all types of peers connected to network
@@ -179,7 +197,6 @@ export function getRoutersConnected2Network(): Promise<CP[] | null> {
 //export function getWalletBalance(): Promise<>
 
 //==================== TRANSACTIONS FUNCTIONS ====================
-
 /**
  * Optimized version of searching transaction data in blockchain it stops if transaction was fidden.
  * 
@@ -275,6 +292,86 @@ export function getTransactionData(txHash: string): Promise<TX | null> {
 
 	})
 }
+
 //==================== VALIDATORS ====================
+/**
+ * Check if gas limit for block transactions is reached.
+ * 
+ * Max gas limit is 69000000 pixels or 6.9 pixel in smaller form
+ * @param txs transactions to calculate gas limit
+ * @returns true = reached gas limit so need to calculate gaslimit - last transaction in mempool
+ * repeat every time till gas for every transaction is smaller than gas limit
+ */
+export function isGasLimitReached(txs: TX[]): boolean {
+	const gasLimit: number = 6900000;
+	let calcGas: number = 0;
+	txs.forEach((val)=>{
+		calcGas += val.fee
+	})
+	return calcGas > gasLimit
+}
+
+/**
+ * As consesus: pick random node registered as validator to propose own block
+ * @param nodes nodes to pick by RNG
+ * @returns single selected node
+ */
+export function chooseRandomNode4Validator(nodes: CP[] | null): CP | null{
+	if( nodes != null){
+		const RNG = Math.floor( Math.random() * nodes.length);
+		return nodes[RNG];
+	} else {
+		return null;
+	}
+}
 
 //==================== BLOCKS ====================
+/**
+ * Get last block height from files which already exist in this validator memory.
+ * @returns block height as number
+ */
+export function getLastBlockHeight(): Promise<number>{
+	return new Promise (resolve =>{
+		getBlocksFilesSorted().then((files)=>{
+			try {
+				if(files != null){
+					let lastIndex: number = 0;
+					const lastFile = files.pop();
+					const file: BLK[] = JSON.parse(readFileSync(`src/data/blockchain/blocks/${lastFile}`, 'utf8'));
+					file.forEach((blk)=>{
+						if(blk.header.height >= lastIndex){
+							lastIndex = blk.header.height
+						}
+					});
+					resolve(lastIndex)
+				} else {
+					resolve(0)
+				}
+			} catch( e ){
+				resolve(0)
+			}
+		})
+	})
+}
+
+/**
+ * Get last block full info from blocks in blockchain in this validator
+ * @returns last block full info
+ */
+export function getLastBlock(): Promise<BLK | null>{
+	return new Promise (resolve=>{
+		getBlocksFilesSorted().then((files)=>{
+			if(files != null){
+				const lastBlkFile = files.pop();
+				try{
+					const fileData: BLK[] = JSON.parse(readFileSync(`src/data/blockchain/blocks/${lastBlkFile}`, 'utf8'));
+					fileData.length > 0 ? resolve(fileData[fileData.length - 1]) : resolve(null)
+				} catch (e){
+					resolve(null)
+				}
+			} else {
+				resolve(null)
+			}
+		})
+	})
+}
