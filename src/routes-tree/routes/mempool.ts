@@ -1,6 +1,6 @@
 /** basic imports */
 import Express from "express";
-import { getMemPoolTransactions } from '../../blockchain/operators'
+import { getMemPoolTransactions } from '../../modules/files.module'
 const mempool = Express.Router();
 
 /**

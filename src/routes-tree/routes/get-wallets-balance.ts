@@ -1,6 +1,6 @@
 /** Basic imports */
 import Express from 'express';
-import { check04OfArray, checklength130OfArray, getWalletBalanceArray } from '../../blockchain/operators';
+import { check04OfArray, checklength130OfArray, getWalletBalanceArray } from '../../modules/wallet.module';
 const walletsBalance = Express.Router();
 
 /**

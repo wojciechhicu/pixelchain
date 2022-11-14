@@ -1,10 +1,7 @@
 /** Basic imports */
 import Express from "express";
-import fs from 'fs';
-import { InMempoolTransaction as TX} from "src/blockchain/interfaces";
-import { Block as BLK} from "src/blockchain/interfaces";
-import { checkLen, check04, getWalletTransactions } from "../../blockchain/operators";
-import { reqWallet } from 'src/blockchain/interfaces'
+import { checkLen, check04, getWalletTransactions } from "../../modules/wallet.module";
+import { reqWallet } from 'src/interfaces'
 const walletTxs = Express.Router();
 
 /**

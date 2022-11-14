@@ -1,7 +1,9 @@
 /** Basic imports */
 import Express from "express";
-import { InMempoolTransaction as TX } from "src/blockchain/interfaces";
-import { isValidTx, walletAlreadyInMempool, walletHaveEnoughTokens, saveTransaction2Mempool } from "../../blockchain/operators";
+import { InMempoolTransaction as TX } from "src/interfaces";
+import { walletAlreadyInMempool, walletHaveEnoughTokens } from "../../modules/wallet.module";
+import { isValidTx } from '../../modules/transaction.module';
+import { saveTransaction2Mempool } from '../../modules/files.module';
 const sendTx = Express.Router();
 
 /**
