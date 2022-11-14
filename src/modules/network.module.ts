@@ -133,6 +133,7 @@ export function onStartReloadGetPeers(): boolean {
                 return false
         }
 }
+
 /**
  * connect to network every reload / start
  */
