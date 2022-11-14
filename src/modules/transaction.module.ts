@@ -1,4 +1,4 @@
-import { InMempoolTransaction as TX, Index as IND, Block as BLK } from 'src/interfaces';
+import { InMempoolTransaction as TX, Index as IND, Block as BLK } from 'src/interfaces/front-api.interfaces';
 import { getMemPoolTransactions, getBlockFilesIndexesSorted } from './files.module';
 import { readFileSync, readFile } from 'fs';
 import { SHA256 } from 'crypto-js';

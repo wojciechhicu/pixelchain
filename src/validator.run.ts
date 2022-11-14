@@ -1,6 +1,6 @@
 /** Basic imports */
 import Express from 'express';
-import { Server } from '../config';
+import { Server } from './validator_config/config';
 import helmet from 'helmet';
 import cors from 'cors';
 import routes from './routes-tree/routes-index';

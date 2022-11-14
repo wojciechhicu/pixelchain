@@ -1,7 +1,7 @@
 /** Basic imports */
 import Express from 'express';
 import { getTransactionData } from '../../modules/transaction.module';
-import { TxHash } from 'src/interfaces'
+import { TxHash } from 'src/interfaces/front-api.interfaces'
 const transactionData = Express.Router();
 
 /**

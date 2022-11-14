@@ -1,7 +1,7 @@
 /** Basic imports */
 import Express from "express";
 import { checkLen, check04, getWalletTransactions } from "../../modules/wallet.module";
-import { reqWallet } from 'src/interfaces'
+import { reqWallet } from 'src/interfaces/front-api.interfaces'
 const walletTxs = Express.Router();
 
 /**

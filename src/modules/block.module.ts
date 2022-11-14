@@ -1,6 +1,6 @@
 import { getBlocksFilesSorted } from './files.module';
 import { readFileSync, writeFile } from 'fs';
-import { Block as BLK, Index as IND} from 'src/interfaces';
+import { Block as BLK, Index as IND} from 'src/interfaces/front-api.interfaces';
 import { SHA256 } from 'crypto-js'
 
 //==================== BLOCKS ====================

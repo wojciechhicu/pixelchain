@@ -1,6 +1,6 @@
 /** Basic imports */
 import Express from "express";
-import { InMempoolTransaction as TX } from "src/interfaces";
+import { InMempoolTransaction as TX } from "src/interfaces/front-api.interfaces";
 import { walletAlreadyInMempool, walletHaveEnoughTokens } from "../../modules/wallet.module";
 import { isValidTx } from '../../modules/transaction.module';
 import { saveTransaction2Mempool } from '../../modules/files.module';

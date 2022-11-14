@@ -1,4 +1,4 @@
-import { InMempoolTransaction as TX, ConnectedPeers as CP } from "src/interfaces";
+import { InMempoolTransaction as TX, ConnectedPeers as CP } from "src/interfaces/front-api.interfaces";
 
 //==================== VALIDATORS ====================
 /**
