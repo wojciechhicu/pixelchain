@@ -5,7 +5,7 @@
 	"main": "index.ts",
 	"scripts": {
 		"start": "nodemon ./src/validator.run.ts --config ./nodemon.json",
-		"tFiles": "nodemon ./src/blockchain/main-chain/files-operators.ts --config ./nodemon.json"
+		"createWallet": "nodemon ./src/validator_config/create_wallet.ts --config ./nodemon.json"
 	},
 	"author": "Wojciech Marek",
 	"license": "ISC",

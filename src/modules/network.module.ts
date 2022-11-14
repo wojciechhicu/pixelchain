@@ -1,8 +1,8 @@
 import { readFile, writeFileSync } from "fs";
 import  request  from "request";
 import { ConnectedPeers as CP} from 'src/interfaces/front-api.interfaces';
-import { dns } from '../network-routing.dns';
-import { Server } from '../../config'
+import { dns } from '../validator_config/network-routing.dns';
+import { Server } from '../validator_config/config'
 
 //==================== NETWORK FUNCTIONS ====================
 /**
