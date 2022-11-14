@@ -1,1 +1,1 @@
-[{"host":"http://localhost","port":12000,"type":"validator"},{"host":"http://localhost","port":12002,"type":"validator"},{"host":"http://localhost","port":12020,"type":"validator"},{"host":"http://localhost","port":12400,"type":"validator"}]
+[{"host":"http://localhost","port":12000,"type":"validator"}]

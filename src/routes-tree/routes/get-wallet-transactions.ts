@@ -1,9 +1,7 @@
 /** Basic imports */
 import Express from "express";
-import fs from 'fs';
-import { InMempoolTransaction as TX} from "src/_helpers/mempool/mempool.interface";
-import { Block } from "src/_helpers/blockchain/block.interface";
-import { reqWallet, getFilesInDir, responseWalletTxs, checkLen, check04 } from "../../_helpers/blockchain/wallet-transactions";
+import { checkLen, check04, getWalletTransactions } from "../../modules/wallet.module";
+import { reqWallet } from 'src/interfaces'
 const walletTxs = Express.Router();
 
 /**
@@ -27,36 +25,9 @@ const walletTxs = Express.Router();
 			return;
 		}
 
-		/** blockchain files names */
-		const files: string [] = getFilesInDir();
-
-		/** Wallet transactions */
-		let walletTransactions: responseWalletTxs[] =[];
-		
-		/** Search for transactions for request wallet */
-		files.forEach((val)=>{
-			const file: Block[] = JSON.parse(fs.readFileSync(`src/data/blockchain/blocks/${val}`, 'utf8'));
-			file.forEach((value)=>{
-				let blockHeight = value.header.height;
-				let transactions: TX[] = [];
-				value.transactions.forEach((v)=>{
-					if(v.from == request.wallet || v.to == request.wallet){
-						transactions.push(v);
-					}
-				})
-				if(transactions.length > 0){
-					walletTransactions.push({blockHeight: blockHeight, transactions: transactions})
-				}
-			})
+		getWalletTransactions(request.wallet).then((response)=>{
+			res.status(200).send(response)
 		})
-
-		/** Check if there is any transaction for wallet */
-		if(walletTransactions.length <= 0){
-			res.status(200).send(walletTransactions)
-			return
-		} else {
-			res.status(200).send(walletTransactions)
-		}
 		
 	} catch(e){
 		res.status(400).send({error: e})
@@ -65,4 +36,3 @@ const walletTxs = Express.Router();
 
 /** export route to router */
 export = walletTxs;
-//TODO dodać true lub false dla in jesli transakcja wychodzi z portfela lub przychodzi

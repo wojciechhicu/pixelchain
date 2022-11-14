@@ -1,6 +1,7 @@
 /** Basic imports */
 import Express from 'express';
-import { getTransactionData } from '../../blockchain/main-chain/files-operators';
+import { getTransactionData } from '../../modules/transaction.module';
+import { TxHash } from 'src/interfaces'
 const transactionData = Express.Router();
 
 /**
@@ -14,7 +15,11 @@ transactionData.post('/', (req, res) => {
 
 		/** finish task of searching transaction data */
 		getTransactionData(reqTx.TxHash).then((val)=>{
-			res.status(200).send(val)
+			if(val != null){
+				res.status(200).send(val)
+			} else {
+				res.status(400).send({error: null})
+			}
 		})
 	} catch (e) {
 		res.status(400).send({error: e});
@@ -23,11 +28,3 @@ transactionData.post('/', (req, res) => {
 
 /** Export route */
 export = transactionData;
-
-/**
- * Simple txhash of transaction
- * @param TxHash hash
- */
-interface TxHash {
-	TxHash: string;
-}
