@@ -1,7 +1,7 @@
-import { InMempoolTransaction as TX } from "src/interfaces";
+import { InMempoolTransaction as TX } from "src/interfaces/front-api.interfaces";
 import { readFileSync } from "fs";
 import { getBlocksFilesSorted } from './files.module';
-import { Block as BLK, WalletBalance as WB, responseWalletTxs as RWTX} from 'src/interfaces'
+import { Block as BLK, WalletBalance as WB, responseWalletTxs as RWTX} from 'src/interfaces/front-api.interfaces'
 
 //==================== WALLET FUNCTIONS ====================
 /**

@@ -1,6 +1,6 @@
 import { readdir, readFile, stat, writeFile } from 'fs';
 import { SHA256 } from 'crypto-js';
-import { InMempoolTransaction as TX} from 'src/interfaces'
+import { InMempoolTransaction as TX} from 'src/interfaces/front-api.interfaces'
 
 //==================== FILES FUNCTIONS ====================
 /**

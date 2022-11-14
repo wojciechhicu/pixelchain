@@ -1,6 +1,6 @@
 import { readFile, writeFileSync } from "fs";
 import  request  from "request";
-import { ConnectedPeers as CP} from 'src/interfaces';
+import { ConnectedPeers as CP} from 'src/interfaces/front-api.interfaces';
 import { dns } from '../network-routing.dns';
 import { Server } from '../../config'
 
