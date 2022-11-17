@@ -104,7 +104,7 @@ export function GenereteGenesisBlock(): Promise<Boolean> {
                                                 if (error) {
                                                         resolve(false)
                                                 } else {
-                                                        console.log('Genesis block index created!\n Ready to sync.');
+                                                        console.log('Genesis block index created!\nReady to sync.');
                                                         resolve(true)
                                                 }
                                         })

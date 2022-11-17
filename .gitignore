@@ -12,3 +12,4 @@
 #old helper files
 ./src/blockchain
 src/data/mempool/transactions.json
+src/validator_config/last_block.json

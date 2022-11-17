@@ -1,6 +1,6 @@
-import { readdir, readFile, stat, writeFile } from 'fs';
+import { readdir, readFile, stat, writeFile, readFileSync } from 'fs';
 import { SHA256 } from 'crypto-js';
-import { InMempoolTransaction as TX} from 'src/interfaces/front-api.interfaces'
+import { InMempoolTransaction as TX, Block as BLK} from 'src/interfaces/front-api.interfaces'
 
 //==================== FILES FUNCTIONS ====================
 /**
@@ -132,6 +132,34 @@ export function saveTransaction2Mempool(reqTx: TX): Promise<boolean> {
 				})
 			}else {
 				resolve(false)
+			}
+		})
+	})
+}
+
+/**
+ * search last created file to see last block height in blockchain
+ * @returns block height or -1 if there is no any file
+ */
+export function seeLastBlockHeight(): Promise<number> {
+	return new Promise ( resolve=>{
+		getBlocksFilesSorted().then((files)=>{
+			try {
+				if(files != null){
+					const lastFile = files[0];
+					let hIndex: number = 0;
+					const blks: BLK[] = JSON.parse(readFileSync(`src/data/blockchain/blocks/${lastFile}`, 'utf8'));
+					blks.forEach((blk)=>{
+						if(blk.header.height > hIndex){
+							hIndex = blk.header.height
+						}
+					})
+					resolve(hIndex);
+				} else {
+					resolve(-1);
+				}
+			} catch(e){
+				resolve(-1)
 			}
 		})
 	})
