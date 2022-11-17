@@ -1,4 +1,4 @@
-import { getBlocksFilesSorted } from './files.module';
+import { getBlocksFilesSorted, getBlocksFiles } from './files.module';
 import { readFileSync, writeFile } from 'fs';
 import { Block as BLK, Index as IND} from 'src/interfaces/front-api.interfaces';
 import { SHA256 } from 'crypto-js'
@@ -122,7 +122,7 @@ export function GenereteGenesisBlock(): Promise<Boolean> {
  */
 export function getLastBlock(): Promise<BLK | null> {
         return new Promise(resolve => {
-                getBlocksFilesSorted().then((files) => {
+                getBlocksFiles().then((files) => {
                         if (files != null) {
                                 const lastBlkFile = files.pop();
                                 try {

@@ -202,15 +202,16 @@ export function getConnectedNodes(): Promise<CP[] | null> {
 	})
 }
 
+//TODO naprawić dokumentacje
 /**
  * Chek if there are more than this node connected to network
  * @param peers peers connected to network
  * @returns true: there are more peers than this node; false only this node connected to network
  */
-export function isOtherNodesInNetwork(peers: CP[]):boolean {
+export function isOtherNodesInNetwork(peers: CP[]):CP[] {
 	let ind = peers.findIndex(x =>{ x.host === Server.Host && x.port === Server.Port});
 	peers.splice(ind, 1);
-	return peers.length > 0
+	return peers
 }
 
 export function askNetworkAboutLastBlock(peers: CP[]): BLK[]{
@@ -221,7 +222,7 @@ export function askNetworkAboutLastBlock(peers: CP[]): BLK[]{
 		request.get(
 			{
 				headers: { 'content-type': 'application/json' },
-				url: `${peer.host}${peer.port}/validator/get-block-height`,
+				url: `${peer.host}${peer.port}/validator/get-last-block`,
 				json: true
 			},
 			(err, res, body) => {

@@ -10,7 +10,7 @@ import walletsBalance from './front-api/get-wallets-balance';
 import walletTxs from './front-api/get-wallet-transactions';
 
 /** Import validator routes */
-import blockH from './validator-api/get-block-height';
+import blockH from './validator-api/get-last-block';
 
 /** Using imports as routes */
 router.use("/mempool", mempool);
@@ -20,7 +20,7 @@ router.use("/get-wallets-balance", walletsBalance);
 router.use("/get-wallet-transactions", walletTxs);
 
 /** Using imports as validator */
-router.use("/validator/get-block-height", blockH);
+router.use("/validator/get-last-block", blockH);
 
 
 /** Export all routes to ../validator.run.ts */
