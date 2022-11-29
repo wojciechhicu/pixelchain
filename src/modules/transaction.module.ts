@@ -4,6 +4,7 @@ import { readFileSync, readFile } from 'fs';
 import { SHA256 } from 'crypto-js';
 import * as elliptic from 'elliptic';
 const ec = new elliptic.ec('secp256k1');
+import { Server } from '../validator_config/config';
 
 //==================== TRANSACTIONS FUNCTIONS ====================
 /**
@@ -124,4 +125,34 @@ export function isValidTx(tx: TX): boolean {
  */
 export function calcTxSHA256(tx: TX): string {
         return SHA256(tx.from + tx.to + tx.txValue + tx.timestamp + tx.fee).toString()
+}
+
+export function createCoinbaseTransaction():TX {
+        let transaction: TX = {
+                from: "null",
+                to: Server.Config.ValidatorFeeWallet,
+                signature: "null",
+                txValue: 10000000,
+                fee: 0,
+                timestamp: Date.now(),
+        }
+        transaction.TxHash = SHA256(JSON.stringify(transaction)).toString()
+        return transaction
+}
+
+export function createFeeTransaction(txs: TX[]):TX {
+        let fullFee: number = 0;
+        txs.forEach((tx)=>{
+                fullFee += tx.fee
+        })
+        let transaction: TX = {
+                from: "null",
+                to: Server.Config.ValidatorFeeWallet,
+                signature: "null",
+                txValue: fullFee,
+                fee: 0,
+                timestamp: Date.now(),
+        }
+        transaction.TxHash = SHA256(JSON.stringify(transaction)).toString();
+        return transaction
 }

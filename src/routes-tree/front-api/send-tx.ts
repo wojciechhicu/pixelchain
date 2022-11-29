@@ -4,6 +4,8 @@ import { InMempoolTransaction as TX } from "src/interfaces/front-api.interfaces"
 import { walletAlreadyInMempool, walletHaveEnoughTokens } from "../../modules/wallet.module";
 import { isValidTx } from '../../modules/transaction.module';
 import { saveTransaction2Mempool } from '../../modules/files.module';
+import { getConnectedNodes, isOtherNodesInNetwork} from '../../modules/network.module';
+import request from "request";
 const sendTx = Express.Router();
 
 /**
@@ -49,9 +51,38 @@ sendTx.post("/", (req: any, res) => {
                  */
                 walletHaveEnoughTokens(requestTx).then((haveEnough) => {
                         if (haveEnough) {
-                                //save transaction into mempool
+                                //save transaction into mempool and send transaction to other nodes if exist
                                 saveTransaction2Mempool(requestTx).then((val)=>{
-                                        val ? res.status(200).send({ response: 'Transaction added to mempool' }) : res.status(400).send({ error: 'Error while saving transaction to mempool' })
+                                        if(val){
+                                                res.status(200).send({ response: 'Transaction added to mempool' });
+                                                //TODO przetestować czy funkcja działa
+                                                getConnectedNodes().then((peers)=>{
+                                                        if(peers !=null){
+                                                                const nodes = isOtherNodesInNetwork(peers);
+                                                                if(nodes.length > 0){
+                                                                        nodes.forEach((p)=>{
+                                                                                request.post(
+                                                                                        {
+                                                                                                headers: { 'content-type': 'application/json' },
+                                                                                                url: `${p.host}${p.port}/send-transaction`,
+                                                                                                body: requestTx,
+                                                                                                json: true
+                                                                                        },
+                                                                                        (err, res, body) => {
+                                                                                                if (!err && res.statusCode == 200) {
+                                                                                                        console.log(`Transaction sent correctly to node: ${p.host}:${p.port}`);
+                                                                                                } else {
+                                                                                                        console.log(`Cannot send transaction to other node: ${p.host}: ${p.port}`);
+                                                                                                }
+                                                                                        }
+                                                                                );
+                                                                        })
+                                                                }
+                                                        }
+                                                })
+                                        }else {
+                                                res.status(400).send({ error: 'Error while saving transaction to mempool' });
+                                        }
                                 })
                         } else {
                                 res.status(201).send({ error: 'Not enough funds!' });

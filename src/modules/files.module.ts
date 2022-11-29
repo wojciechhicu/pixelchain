@@ -1,4 +1,4 @@
-import { readdir, readFile, stat, writeFile, readFileSync } from 'fs';
+import { readdir, readFile, stat, writeFile, readFileSync, readdirSync } from 'fs';
 import { SHA256 } from 'crypto-js';
 import { InMempoolTransaction as TX, Block as BLK} from 'src/interfaces/front-api.interfaces'
 
@@ -31,6 +31,14 @@ export function getBlocksFilesSorted(): Promise<string[] | null> {
 	})
 }
 
+export function getBlocksFilesSortedSync(): string[]{
+	try {
+		const files = readdirSync('src/data/blockchain/blocks');
+		return files.sort().reverse()
+	}catch(e){
+		throw e
+	}
+}
 /**
  * Get block indexes files names asynchronously.
  * @returns block indexes files as array of files names with .json extension or null when any error accured.
@@ -80,6 +88,14 @@ export function getMemPoolTransactions(): Promise<TX[] | null> {
 	})
 }
 
+export function getMemPoolTransactionsSync(): TX[] {
+	try{
+		const mempool = readFileSync('src/data/mempool/transactions.json', 'utf8');
+		return JSON.parse(mempool)
+	}catch(e){
+		throw e
+	}
+}
 /**
  * Get mempool transactions and sort them higher fee higher position.
  * 
@@ -161,6 +177,15 @@ export function seeLastBlockHeight(): Promise<number> {
 			} catch(e){
 				resolve(-1)
 			}
+		})
+	})
+}
+
+
+export function setNewMempool(txs: TX[]): Promise<boolean>{
+	return new Promise (resolve=>{
+		writeFile('src/data/mempool/transactions.json', JSON.stringify(txs, null, 2), (e)=>{
+			e ? resolve(false) : resolve(true)
 		})
 	})
 }

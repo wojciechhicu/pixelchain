@@ -1,5 +1,11 @@
-import { InMempoolTransaction as TX, ConnectedPeers as CP } from "src/interfaces/front-api.interfaces";
+import { InMempoolTransaction as TX, ConnectedPeers as CP, Block as BLK } from "src/interfaces/front-api.interfaces";
 import { Validator as V} from "src/interfaces/validator-config.interfaces";
+import { getMemPoolTransactionsSortFee } from "./files.module";
+import { checkLastBlkTime, getLastBlock, validateBlock } from "./block.module";
+import { Server as S} from "../validator_config/config";
+import { walletHaveEnoughTokensSync as WT} from "./wallet.module";
+import { isValidTx, createCoinbaseTransaction, createFeeTransaction } from "./transaction.module";
+import { SHA256 } from "crypto-js";
 
 //==================== VALIDATORS ====================
 /**
@@ -91,4 +97,67 @@ export function isConfigValid(conf: V): boolean {
         //check if start time is in correct timestamp
         if (conf.Config.StartTime < 1668458394000) { throw "Not valid start time" }
         return true
+}
+
+/**
+ * Single node configuration
+ */
+export function singleNode(): void {
+        checkLastBlkTime().then((blkTime)=>{
+                if(Date.now() - blkTime >= 12){
+                        getMemPoolTransactionsSortFee().then(txs=>{
+                                if(txs != null){
+                                        getLastBlock().then((lBlk)=>{
+                                                if(lBlk != null){
+                                                        let transactions: TX[] = [];
+                                                        txs.forEach((tx)=>{
+                                                                delete tx.status
+                                                                if(isValidTx(tx)){
+                                                                        //console.log(tx)
+                                                                        if(WT(tx)){
+                                                                                transactions.push(tx)
+                                                                        }
+                                                                }
+                                                                
+                                                        })
+
+                                                        transactions.sort((a,b)=>{return a.fee - b.fee}).reverse()
+
+                                                        while(isGasLimitReached(transactions) === true){
+                                                                transactions.pop()
+                                                        }
+                                                        let coinbase = createCoinbaseTransaction();
+                                                        let fee = createFeeTransaction(transactions);
+                                                        transactions.push(coinbase)
+                                                        transactions.push(fee)
+                                                        let prepBlk: BLK = {
+                                                                header:{
+                                                                       version: 1,
+                                                                       hash: '',
+                                                                       prevHash: lBlk.header.hash,
+                                                                       height: lBlk.header.height + 1,
+                                                                       timestamp: Date.now(),
+                                                                       validator: S.Config.ValidatorFeeWallet
+                                                                },
+                                                                transactions: transactions
+                                                        }
+                                                        prepBlk.header.hash = SHA256(JSON.stringify(prepBlk)).toString()
+                                                        
+                                                        const vBlock = validateBlock(prepBlk);
+                                                        if(vBlock){
+                                                                console.log("yep")
+                                                        } else {
+                                                                console.log("nope")
+                                                        }
+                                                }
+                                        })
+                                } else {
+                                        throw "Error while rethrieving mempool"
+                                }
+                        })
+                } else {
+                        console.log("Block created not far along so skip")//TODO przetestować czy funkcja co 12 sekund czy działa
+                }
+        })
+
 }

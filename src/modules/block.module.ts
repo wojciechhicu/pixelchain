@@ -137,3 +137,25 @@ export function getLastBlock(): Promise<BLK | null> {
                 })
         })
 }
+
+export function checkLastBlkTime(): Promise<number>{
+        return new Promise (resolve=>{
+                getLastBlock().then((blk)=>{
+                        if(blk != null){
+                                resolve(blk.header.timestamp)
+                        }
+                })
+        })
+}
+
+export function validateBlock(blk: BLK): boolean {
+        return validateBlockHeader(blk) && validateBlockData(blk)
+}
+
+export function validateBlockHeader(blk: BLK): boolean {
+
+}
+
+export function validateBlockData(blk: BLK): boolean {
+
+}
