@@ -39,17 +39,19 @@ export function getTransactionData(txHash: string): Promise<TX | null> {
                                         else {
                                                 // init file name with transaction. Its helper variable to stop process of searching if transaction was found
                                                 let file: string = '';
-
                                                 //searching process of file with blockchain which contains specyfic transaction hash
                                                 files.every((val) => {
-                                                        if (file === '') {
+                                                        if (String(file) === '') {
                                                                 const indexFile: IND[] = JSON.parse(readFileSync(`src/data/blockchain/indexes/${val}`, 'utf8'));
-                                                                indexFile.every((value) => {
-                                                                        value.Tx?.forEach((v) => {
-                                                                                if (v.txHash === txHash) {
-                                                                                        file = String(value.blockInFile);
-                                                                                }
-                                                                        })
+                                                                //TODO dodać nie przeszukiwanie całego blochcain mimo znalezienie celu ( dodac every nie foreach)
+                                                                indexFile.forEach((value) => {
+                                                                        if(value.Tx != undefined){
+                                                                                value.Tx.forEach((v) => {
+                                                                                        if (v.txHash === txHash) {
+                                                                                                file = String(value.blockInFile);
+                                                                                        }
+                                                                                })
+                                                                        }
                                                                 })
 
                                                                 //if transaction was found stop searching
@@ -58,7 +60,7 @@ export function getTransactionData(txHash: string): Promise<TX | null> {
                                                                 // not stopping searching
                                                                 return false
                                                         }
-                                                })
+                                                })// FIXME naprawić wyswietlanie transakcji
 
                                                 // check if after searching blockchain for this transaction, transaction was found.
                                                 // If not found create fake transaction as response with error status.
@@ -70,7 +72,7 @@ export function getTransactionData(txHash: string): Promise<TX | null> {
                                                                 signature: '',
                                                                 txValue: 0,
                                                                 fee: 0,
-                                                                timestamp: Date.now(),
+                                                                timestamp: Date.now() / 1000,
                                                                 uTxo: 0,
                                                                 TxHash: txHash,
                                                                 status: 0,
@@ -78,7 +80,7 @@ export function getTransactionData(txHash: string): Promise<TX | null> {
                                                         }
                                                         resolve(error)
                                                 } else {
-                                                        readFile(`src/data/blockchain/blocks/${file}.json`, 'utf8', (error: any, data: string) => {
+                                                        readFile(`src/data/blockchain/blocks/${file}`, 'utf8', (error: any, data: string) => {
                                                                 if (error) {
                                                                         resolve(null)
                                                                 } else {
