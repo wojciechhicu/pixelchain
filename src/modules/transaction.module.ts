@@ -4,6 +4,7 @@ import { readFileSync, readFile } from 'fs';
 import { SHA256 } from 'crypto-js';
 import * as elliptic from 'elliptic';
 const ec = new elliptic.ec('secp256k1');
+import { Server } from '../validator_config/config';
 
 //==================== TRANSACTIONS FUNCTIONS ====================
 /**
@@ -46,7 +47,7 @@ export function getTransactionData(txHash: string): Promise<TX | null> {
                                                                 indexFile.every((value) => {
                                                                         value.Tx?.forEach((v) => {
                                                                                 if (v.txHash === txHash) {
-                                                                                        file = value.blockInFile;
+                                                                                        file = String(value.blockInFile);
                                                                                 }
                                                                         })
                                                                 })
@@ -124,4 +125,43 @@ export function isValidTx(tx: TX): boolean {
  */
 export function calcTxSHA256(tx: TX): string {
         return SHA256(tx.from + tx.to + tx.txValue + tx.timestamp + tx.fee).toString()
+}
+
+/**
+ * Create coinbase prize for running node
+ * @returns new transaction
+ */
+export function createCoinbaseTransaction():TX {
+        let transaction: TX = {
+                from: "null",
+                to: Server.Config.ValidatorFeeWallet,
+                signature: "null",
+                txValue: 10000000,
+                fee: 0,
+                timestamp: Date.now(),
+        }
+        transaction.TxHash = SHA256(JSON.stringify(transaction)).toString()
+        return transaction
+}
+
+/**
+ * Creat new transaction with fees from block transfared to validator
+ * @param txs transactions array in block
+ * @returns new transaction sending fees to validator as transaction
+ */
+export function createFeeTransaction(txs: TX[]):TX {
+        let fullFee: number = 0;
+        txs.forEach((tx)=>{
+                fullFee += tx.fee
+        })
+        let transaction: TX = {
+                from: "null",
+                to: Server.Config.ValidatorFeeWallet,
+                signature: "null",
+                txValue: fullFee,
+                fee: 0,
+                timestamp: Date.now(),
+        }
+        transaction.TxHash = SHA256(JSON.stringify(transaction)).toString();
+        return transaction
 }

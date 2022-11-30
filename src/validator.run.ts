@@ -5,8 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import routes from './routes-tree/routes-index';
 import bodyParser from 'body-parser';
-import { validator } from './modules/validator';
-import { onStartReloadGetPeers } from './modules/network.module';
+import { validator as runValidator} from './modules/validator';
 import { isConfigValid } from './modules/validator.module';
 const app = Express();
 
@@ -25,9 +24,16 @@ app.get('/', (req, res) => {
  */
 app.listen(Server.Port, () => {
 	try {
-		isConfigValid(Server)
-		const onStart: boolean = onStartReloadGetPeers();
-		onStart === true ? setInterval(validator, 3000) : console.log('Cannot connect to network')
+		//config validation
+		const isValid = isConfigValid(Server);
+
+		//if there was error in config throw error / stop process
+		if(!isValid) { throw 'Config error!'};
+
+		//run validator process
+		runValidator();
+
+		//log start process when everything goes well
 		console.log(`Validator created: ${Server.Host}:${Server.Port}`);
 	} catch (e) {
 		throw e

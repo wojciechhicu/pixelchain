@@ -1,6 +1,6 @@
 import { InMempoolTransaction as TX } from "src/interfaces/front-api.interfaces";
 import { readFileSync } from "fs";
-import { getBlocksFilesSorted } from './files.module';
+import { getBlocksFilesSorted, getBlocksFilesSortedSync } from './files.module';
 import { Block as BLK, WalletBalance as WB, responseWalletTxs as RWTX} from 'src/interfaces/front-api.interfaces'
 
 //==================== WALLET FUNCTIONS ====================
@@ -58,6 +58,28 @@ export function walletHaveEnoughTokens(tx: TX): Promise<boolean> {
                 }
 
         })
+}
+
+export function walletHaveEnoughTokensSync(tx: TX): boolean {
+        try {
+                // check if fee is higher than 0.0000001
+                if (tx.fee < 1) { return false }
+
+                //check if transaction value is higher than 0.0000001
+                if (tx.txValue < 1) { return false }
+                
+                /** COmbined value of fee and transaction value */
+                const combinedValue: number = tx.txValue + tx.fee;
+
+                const balance = getWalletBalanceSync(tx.from)
+                if(combinedValue <= balance){
+                        return true
+                }else {
+                        return false
+                }
+        } catch(e){
+                throw e
+        }
 }
 
 /**
@@ -128,6 +150,28 @@ export function getWalletBalance(pubKey: string): Promise<number> {
         })
 }
 
+export function getWalletBalanceSync(pub: string): number{
+        try {
+                const files = getBlocksFilesSortedSync();
+                let balance: number = 0;
+                files.forEach((value) => {
+                        const file: BLK[] = JSON.parse(readFileSync(`src/data/blockchain/blocks/${value}`, 'utf8'))
+                        file.forEach((val) => {
+                                val.transactions.forEach((v) => {
+                                        if (v.to == pub) {
+                                                balance += v.txValue;
+                                        }
+                                        if (v.from == pub) {
+                                                balance -= v.txValue - v.fee
+                                        }
+                                })
+                        })
+                })
+                return balance
+        } catch(e){
+                throw e
+        }
+}
 /**
  * Get wallets balances.
  * @param pubKey array of public keys to search for balance.
@@ -162,7 +206,8 @@ export function getWalletBalanceArray(pubKey: string[]): Promise<WB[] | null> {
                                         })
                                         resolve(walletsBalances)
                                 } else {
-                                        resolve(null)
+                                        resolve(null)// FIXME naprawić zwracanie wielkości portfela
+                                        //FIXME naprawić zwracanie timestamp / 1000
                                 }
                         });
                 } catch (e) {

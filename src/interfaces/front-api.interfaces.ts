@@ -62,7 +62,7 @@ export interface responseWalletTxs {
  */
 export interface Index {
         blockHeight: number;
-        blockInFile: string;
+        blockInFile: string | undefined;
         Tx: simpleTx[] | undefined;
 }
 
@@ -70,7 +70,7 @@ export interface Index {
  * simplifyed tx just to transaction hash
  */
 export interface simpleTx {
-        txHash: string;
+        txHash: string | undefined;
 }
 
 /**
