@@ -206,7 +206,7 @@ export function getWalletBalanceArray(pubKey: string[]): Promise<WB[] | null> {
                                         })
                                         resolve(walletsBalances)
                                 } else {
-                                        resolve(null)
+                                        resolve(null)// FIXME naprawić zwracanie wielkości portfela
                                 }
                         });
                 } catch (e) {

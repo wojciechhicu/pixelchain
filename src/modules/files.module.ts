@@ -19,6 +19,10 @@ export function getBlocksFiles(): Promise<string[] | null> {
 	})
 }
 
+/**
+ * Get block files names synchronously.
+ * @returns block files as array of files names with .json extension or null when any error accured.
+ */
 export function getBlocksFilesSync(): string[]{
 	try{
 		return readdirSync('src/data/blockchain/blocks', 'utf8')
@@ -26,6 +30,7 @@ export function getBlocksFilesSync(): string[]{
 		throw e
 	}
 }
+
 /**
  * Get block files names asynchronously.
  * @returns reversed array of files.
@@ -38,6 +43,10 @@ export function getBlocksFilesSorted(): Promise<string[] | null> {
 	})
 }
 
+/**
+ * Get block files names synchronously.
+ * @returns reversed array of files.
+ */
 export function getBlocksFilesSortedSync(): string[]{
 	try {
 		const files = readdirSync('src/data/blockchain/blocks');
@@ -46,6 +55,7 @@ export function getBlocksFilesSortedSync(): string[]{
 		throw e
 	}
 }
+
 /**
  * Get block indexes files names asynchronously.
  * @returns block indexes files as array of files names with .json extension or null when any error accured.
@@ -74,9 +84,14 @@ export function getBlockFilesIndexesSorted(): Promise<string[] | null> {
 	})
 }
 
+/**
+ * Get block indexes files names synchronously and sort + reverse array.
+ * @returns sorted and reversed array of files.
+ */
 export function getBlockFilesIndexesSortedSync(): string[]{
 	return readdirSync('src/data/blockchain/indexes', 'utf8').sort().reverse()
 }
+
 /**
  * Asynchronously get mempool file with transactions.
  * @returns transactions object or null when error accured.
@@ -98,6 +113,10 @@ export function getMemPoolTransactions(): Promise<TX[] | null> {
 	})
 }
 
+/**
+ * Synchronously get mempool file with transactions.
+ * @returns transactions object.
+ */
 export function getMemPoolTransactionsSync(): TX[] {
 	try{
 		const mempool = readFileSync('src/data/mempool/transactions.json', 'utf8');
@@ -106,6 +125,7 @@ export function getMemPoolTransactionsSync(): TX[] {
 		throw e
 	}
 }
+
 /**
  * Get mempool transactions and sort them higher fee higher position.
  * 
@@ -139,6 +159,11 @@ export function getFileSize(path: string): Promise<number> {
 	})
 }
 
+/**
+ * Get file size in MB
+ * @param path path to file to check
+ * @returns size in MB
+ */
 export function getFileSizeSync(path: string): number{
 	try{
 		return statSync(path).size / (1024 * 1000)
@@ -146,6 +171,7 @@ export function getFileSizeSync(path: string): number{
 		throw e
 	}
 }
+
 /**
  * Save received transaction to mempool.
  * Transaction was validated before. This function only save not validate.
@@ -198,7 +224,11 @@ export function seeLastBlockHeight(): Promise<number> {
 	})
 }
 
-
+/**
+ * After new block was created add again transactions which were not added to blockchain
+ * @param txs transactions bojects to add to mempool again
+ * @returns boolean if everything goes well
+ */
 export function setNewMempool(txs: TX[]): Promise<boolean>{
 	return new Promise (resolve=>{
 		writeFile('src/data/mempool/transactions.json', JSON.stringify(txs, null, 2), (e)=>{
@@ -207,6 +237,11 @@ export function setNewMempool(txs: TX[]): Promise<boolean>{
 	})
 }
 
+/**
+ * Save new created block to memory
+ * @param blk block to add
+ * @returns true if its ok
+ */
 export function saveNewBlock(blk: BLK): Promise<boolean>{
 	return new Promise (resolve=>{
 		try{
@@ -248,6 +283,12 @@ export function saveNewBlock(blk: BLK): Promise<boolean>{
 	})
 }
 
+/**
+ * Create index file of block
+ * @param blk block
+ * @param name name of file with block
+ * @returns Indexes for block
+ */
 export function createIND(blk: BLK, name: string | undefined): IND {
 	let index: IND = {
 		blockHeight: blk.header.height,
@@ -259,6 +300,12 @@ export function createIND(blk: BLK, name: string | undefined): IND {
 	})
 	return index
 }
+
+/**
+ * Create new file with blocks when old one is bigger than 120MB
+ * @param blk block obj
+ * @param lBlkNFileName last block file 
+ */
 export function blkFile2Big(blk: BLK, lBlkNFileName: string | undefined): void{
 	try{
 		let newName: string | undefined;
@@ -281,6 +328,11 @@ export function blkFile2Big(blk: BLK, lBlkNFileName: string | undefined): void{
 	}
 }
 
+/**
+ * When last file with indexes is too big create new one. Max size 120MB
+ * @param blk block obj
+ * @param lIndFileName last block index file name
+ */
 export function indFile2Big(blk: BLK, lIndFileName: string | undefined): void {
 	try{
 		let newName: string | undefined;
@@ -304,7 +356,11 @@ export function indFile2Big(blk: BLK, lIndFileName: string | undefined): void {
 	}
 }
 
-
+/**
+ * Remove tranbsactions from mempool file
+ * @param txs transactions
+ * @returns true if file updates complete
+ */
 export function removeTxsFromMemPool(txs: TX[]): Promise<boolean>{
 	return new Promise (resolve=>{
 		try{
