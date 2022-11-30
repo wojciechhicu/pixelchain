@@ -153,7 +153,7 @@ export function singleNode(): void {
                                                                         }
                                                                 })
                                                         } else {
-                                                                console.log("Block is not valid, waiting...")
+                                                                console.log("Waiting for block time")
                                                         }
                                                 }
                                         })
