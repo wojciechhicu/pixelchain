@@ -127,6 +127,10 @@ export function calcTxSHA256(tx: TX): string {
         return SHA256(tx.from + tx.to + tx.txValue + tx.timestamp + tx.fee).toString()
 }
 
+/**
+ * Create coinbase prize for running node
+ * @returns new transaction
+ */
 export function createCoinbaseTransaction():TX {
         let transaction: TX = {
                 from: "null",
@@ -140,6 +144,11 @@ export function createCoinbaseTransaction():TX {
         return transaction
 }
 
+/**
+ * Creat new transaction with fees from block transfared to validator
+ * @param txs transactions array in block
+ * @returns new transaction sending fees to validator as transaction
+ */
 export function createFeeTransaction(txs: TX[]):TX {
         let fullFee: number = 0;
         txs.forEach((tx)=>{
