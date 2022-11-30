@@ -213,6 +213,11 @@ export function isOtherNodesInNetwork(peers: CP[]):CP[] {
 	return peers
 }
 
+/**
+ * Ask network for last block
+ * @param peers peers in network
+ * @returns block array
+ */
 export function askNetworkAboutLastBlock(peers: CP[]): BLK[]{
 	let blocks: BLK[] = [];
 	let index: number = 0;
