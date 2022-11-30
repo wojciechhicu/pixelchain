@@ -47,7 +47,7 @@ export function getTransactionData(txHash: string): Promise<TX | null> {
                                                                 indexFile.every((value) => {
                                                                         value.Tx?.forEach((v) => {
                                                                                 if (v.txHash === txHash) {
-                                                                                        file = value.blockInFile;
+                                                                                        file = String(value.blockInFile);
                                                                                 }
                                                                         })
                                                                 })

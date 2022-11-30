@@ -1,6 +1,6 @@
-import { readdir, readFile, stat, writeFile, readFileSync, readdirSync } from 'fs';
+import { readdir, readFile, stat, writeFile, readFileSync, readdirSync, statSync, writeFileSync } from 'fs';
 import { SHA256 } from 'crypto-js';
-import { InMempoolTransaction as TX, Block as BLK} from 'src/interfaces/front-api.interfaces'
+import { InMempoolTransaction as TX, Block as BLK, Index as IND} from 'src/interfaces/front-api.interfaces'
 
 //==================== FILES FUNCTIONS ====================
 /**
@@ -19,6 +19,13 @@ export function getBlocksFiles(): Promise<string[] | null> {
 	})
 }
 
+export function getBlocksFilesSync(): string[]{
+	try{
+		return readdirSync('src/data/blockchain/blocks', 'utf8')
+	} catch(e){
+		throw e
+	}
+}
 /**
  * Get block files names asynchronously.
  * @returns reversed array of files.
@@ -67,6 +74,9 @@ export function getBlockFilesIndexesSorted(): Promise<string[] | null> {
 	})
 }
 
+export function getBlockFilesIndexesSortedSync(): string[]{
+	return readdirSync('src/data/blockchain/indexes', 'utf8').sort().reverse()
+}
 /**
  * Asynchronously get mempool file with transactions.
  * @returns transactions object or null when error accured.
@@ -129,6 +139,13 @@ export function getFileSize(path: string): Promise<number> {
 	})
 }
 
+export function getFileSizeSync(path: string): number{
+	try{
+		return statSync(path).size / (1024 * 1000)
+	} catch(e){
+		throw e
+	}
+}
 /**
  * Save received transaction to mempool.
  * Transaction was validated before. This function only save not validate.
@@ -189,3 +206,134 @@ export function setNewMempool(txs: TX[]): Promise<boolean>{
 		})
 	})
 }
+
+export function saveNewBlock(blk: BLK): Promise<boolean>{
+	return new Promise (resolve=>{
+		try{
+			const lblkFile = getBlocksFilesSortedSync().shift();
+			const lindFile = getBlockFilesIndexesSortedSync().shift();
+
+			
+			if(getFileSizeSync(`src/data/blockchain/blocks/${lblkFile}`) < 120){
+				let blocks: BLK[] = JSON.parse(readFileSync(`src/data/blockchain/blocks/${lblkFile}`, 'utf8'));
+				blocks.push(blk);
+				writeFileSync(`src/data/blockchain/blocks/${lblkFile}`, JSON.stringify(blocks, null, 2), 'utf8');
+
+				if(getFileSizeSync(`src/data/blockchain/indexes/${lindFile}`) <120){
+					let indexes: IND[] = JSON.parse(readFileSync(`src/data/blockchain/indexes/${lindFile}`, 'utf8'));
+					let index: IND = createIND(blk, lblkFile);
+					indexes.push(index);
+					writeFileSync(`src/data/blockchain/indexes/${lindFile}`, JSON.stringify(indexes, null, 2), 'utf8');
+					resolve(true)
+				} else {
+					indFile2Big(blk, lindFile)
+					resolve(true)
+				}
+			} else {
+				blkFile2Big(blk, lblkFile);
+				if(getFileSizeSync(`src/data/blockchain/indexes/${lindFile}`) <120){
+					let indexes: IND[] = JSON.parse(readFileSync(`src/data/blockchain/indexes/${lindFile}`, 'utf8'));
+					let index: IND = createIND(blk, lblkFile);
+					indexes.push(index);
+					writeFileSync(`src/data/blockchain/indexes/${lindFile}`, JSON.stringify(indexes, null, 2), 'utf8');
+					resolve(true)
+				} else {
+					indFile2Big(blk, lindFile)
+					resolve(true)
+				}
+			}
+		} catch(e){
+			resolve(false)
+		}
+	})
+}
+
+export function createIND(blk: BLK, name: string | undefined): IND {
+	let index: IND = {
+		blockHeight: blk.header.height,
+		blockInFile: name,
+		Tx: []
+	}
+	blk.transactions.forEach((v)=>{
+		index.Tx?.push({txHash: v.TxHash})
+	})
+	return index
+}
+export function blkFile2Big(blk: BLK, lBlkNFileName: string | undefined): void{
+	try{
+		let newName: string | undefined;
+		let name = lBlkNFileName;
+		newName = name?.slice(5,14);
+		let tmp: number = Number(newName) + 1;
+		newName = String(tmp);
+		const len = newName.length;
+		let miss = 9 - len;
+		let str = '';
+		for(let i = 0; i < miss; i++){
+			str = str + 0;
+		}
+		const finalName = `pixel${str}${newName}.json`;
+		let blocks: BLK[] = [];
+		blocks.push(blk);
+		writeFileSync(`src/data/blockchain/blocks/${finalName}`, JSON.stringify(blocks, null, 2), 'utf8');
+	} catch(e){
+		throw e
+	}
+}
+
+export function indFile2Big(blk: BLK, lIndFileName: string | undefined): void {
+	try{
+		let newName: string | undefined;
+		let name = lIndFileName;
+		newName = name?.slice(5,11);
+		let tmp: number = Number(newName) + 1;
+		newName = String(tmp);
+		const len = newName.length;
+		let miss = 6 - len;
+		let str = '';
+		for(let i = 0; i < miss; i++){
+			str = str + 0;
+		}
+		const finalName = `index${str}${newName}.json`;
+		let indexes: IND[] = [];
+		let index = createIND(blk, finalName);
+		indexes.push(index)
+		writeFileSync(`src/data/blockchain/indexes/${finalName}`, JSON.stringify(indexes, null, 2), 'utf8');
+	} catch(e){
+		throw e
+	}
+}
+
+
+export function removeTxsFromMemPool(txs: TX[]): Promise<boolean>{
+	return new Promise (resolve=>{
+		try{
+			readFile('src/data/mempool/transactions.json', 'utf8', (e, d)=>{
+				if(e){
+					resolve(false)
+				} else {
+					let memPool: TX[] = JSON.parse(d);
+					let txss: TX[] = [];
+					txs.forEach((val, ind)=>{
+						let index = memPool.findIndex(obj =>{
+							return obj.signature === val.signature
+						})
+						if(index == -1 && val.signature !== "null"){
+							txss.push(val)
+						}
+					})
+					writeFile('src/data/mempool/transactions.json', JSON.stringify(txss, null, 2), 'utf8', (err)=>{
+						if(err){
+							throw err
+						} else {
+							console.log("New block created.\nMem pool updated");
+						}
+					})
+				}
+			})
+		} catch(e){
+			resolve(false)
+		}
+	})	
+}
+//TODO dodać wszędzie dokumentacje

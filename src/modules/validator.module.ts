@@ -1,6 +1,6 @@
 import { InMempoolTransaction as TX, ConnectedPeers as CP, Block as BLK } from "src/interfaces/front-api.interfaces";
 import { Validator as V} from "src/interfaces/validator-config.interfaces";
-import { getMemPoolTransactionsSortFee } from "./files.module";
+import { getMemPoolTransactionsSortFee, saveNewBlock, removeTxsFromMemPool } from "./files.module";
 import { checkLastBlkTime, getLastBlock, validateBlock } from "./block.module";
 import { Server as S} from "../validator_config/config";
 import { walletHaveEnoughTokensSync as WT} from "./wallet.module";
@@ -145,9 +145,15 @@ export function singleNode(): void {
                                                         
                                                         const vBlock = validateBlock(prepBlk);
                                                         if(vBlock){
-                                                                console.log("yep")
+                                                                saveNewBlock(prepBlk).then((v)=>{
+                                                                        if(v){
+                                                                                removeTxsFromMemPool(prepBlk.transactions).then((val)=>{
+                                                                                        val ? console.log("Transactions removes from memPool"): console.log("Cannot remove transactions!")
+                                                                                })
+                                                                        }
+                                                                })
                                                         } else {
-                                                                console.log("nope")
+                                                                console.log("Block is not valid, waiting...")
                                                         }
                                                 }
                                         })
