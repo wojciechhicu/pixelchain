@@ -17,7 +17,7 @@ import { SHA256 } from "crypto-js";
  * repeat every time till gas for every transaction is smaller than gas limit
  */
 export function isGasLimitReached(txs: TX[]): boolean {
-        const gasLimit: number = 6900000;
+        const gasLimit: number = 690000000;
         let calcGas: number = 0;
         txs.forEach((val) => {
                 calcGas += val.fee
@@ -104,7 +104,7 @@ export function isConfigValid(conf: V): boolean {
  */
 export function singleNode(): void {
         checkLastBlkTime().then((blkTime)=>{
-                if(Date.now() - blkTime >= 12){
+                if(Date.now() - blkTime >= 12000){
                         getMemPoolTransactionsSortFee().then(txs=>{
                                 if(txs != null){
                                         getLastBlock().then((lBlk)=>{
@@ -122,7 +122,6 @@ export function singleNode(): void {
                                                         })
 
                                                         transactions.sort((a,b)=>{return a.fee - b.fee}).reverse()
-
                                                         while(isGasLimitReached(transactions) === true){
                                                                 transactions.pop()
                                                         }
