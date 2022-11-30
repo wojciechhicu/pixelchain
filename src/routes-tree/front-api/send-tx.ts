@@ -55,7 +55,6 @@ sendTx.post("/", (req: any, res) => {
                                 saveTransaction2Mempool(requestTx).then((val)=>{
                                         if(val){
                                                 res.status(200).send({ response: 'Transaction added to mempool' });
-                                                //TODO przetestować czy funkcja działa
                                                 getConnectedNodes().then((peers)=>{
                                                         if(peers !=null){
                                                                 const nodes = isOtherNodesInNetwork(peers);

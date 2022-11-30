@@ -18,7 +18,7 @@ export function validator() {
                                                 console.log("No other nodes detected.\nStarting network as single node.");
                                                 const connect = connectMeToNetwork()
                                                 if(connect){
-                                                        setInterval(singleNode, 60000)
+                                                        setInterval(singleNode, 10000)
                                                 } else {
                                                         console.log("Cannot enter to network");
                                                         throw 'Error'

@@ -162,7 +162,7 @@ export function singleNode(): void {
                                 }
                         })
                 } else {
-                        console.log("Block created not far along so skip")//TODO przetestować czy funkcja co 12 sekund czy działa
+                        console.log("Block created not far along so skip")
                 }
         })
 

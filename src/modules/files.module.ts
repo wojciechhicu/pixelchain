@@ -336,4 +336,3 @@ export function removeTxsFromMemPool(txs: TX[]): Promise<boolean>{
 		}
 	})	
 }
-//TODO dodać wszędzie dokumentacje

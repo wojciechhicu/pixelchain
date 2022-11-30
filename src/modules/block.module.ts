@@ -169,7 +169,7 @@ export function checkLastBlkTime(): Promise<number>{
 }
 
 /**
- * Validate full block data
+ * Validate full block data. Just in single mode validator
  * @param blk block to check if everything is ok
  * @returns true: correct, false: incorrect
  */
@@ -178,7 +178,7 @@ export function validateBlock(blk: BLK): boolean {
 }
 
 /**
- * Validation of block header
+ * Validation of block header. Just in single mode validator
  * @param blk block to validate
  * @returns true: correct header, false: incorrect
  */
@@ -202,7 +202,7 @@ export function validateBlockHeader(blk: BLK): boolean {
 }
 
 /**
- * Validate block transactions to make sure that block is valid
+ * Validate block transactions to make sure that block is valid. Just in single mode validator
  * @param blk block to validate
  * @returns true: transactions correct; false: incorrect
  */

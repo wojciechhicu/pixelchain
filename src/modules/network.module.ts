@@ -202,7 +202,6 @@ export function getConnectedNodes(): Promise<CP[] | null> {
 	})
 }
 
-//TODO naprawić dokumentacje
 /**
  * Chek if there are more than this node connected to network
  * @param peers peers connected to network
