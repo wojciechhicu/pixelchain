@@ -60,7 +60,7 @@ export function getTransactionData(txHash: string): Promise<TX | null> {
                                                                 // not stopping searching
                                                                 return false
                                                         }
-                                                })// FIXME naprawić wyswietlanie transakcji
+                                                })
 
                                                 // check if after searching blockchain for this transaction, transaction was found.
                                                 // If not found create fake transaction as response with error status.
