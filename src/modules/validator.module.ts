@@ -128,7 +128,9 @@ export function singleNode(): void {
                                                         let coinbase = createCoinbaseTransaction();
                                                         let fee = createFeeTransaction(transactions);
                                                         transactions.push(coinbase)
-                                                        transactions.push(fee)
+                                                        if(fee.txValue > 0){
+                                                                transactions.push(fee)
+                                                        }
                                                         let prepBlk: BLK = {
                                                                 header:{
                                                                        version: 1,
